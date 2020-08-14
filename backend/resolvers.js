@@ -13,7 +13,7 @@ const resolvers = {
             let date = Expiry_Date || new Date();
             const link = new Link({
                 Base_URL: Base_URL,
-                Short_URL: Short_URL || base_convert(time(), 10, 36),
+                Short_URL: Short_URL || "testshorturl",
                 Expired: false,
                 Expiry_Date: date.toString()
             });
