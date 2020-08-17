@@ -1,4 +1,3 @@
-// import React, {useState} from 'react';
 import logo from './logo.svg';
 import './App.css';
 import {BrowserRouter as Router, Route} from "react-router-dom";
@@ -12,8 +11,6 @@ import HomePage from "./components/HomePage.js";
 // import ContactPage from "./components/SignUpPage";
 
 function App() {
-  // const [list, setList] = useState(["apple", "oranges"]);
-
   return (
     <div id="page">
         <Navbar bg="white" expand="lg" id="navbar">

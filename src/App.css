@@ -1,45 +1,44 @@
-@import url('https://fonts.googleapis.com/css2?family=Open+Sans&display=swap');
-#link{
-   display: block;
-   margin : 0 auto;
-   width: 80%;
-   height: 50px;
+@import url("https://fonts.googleapis.com/css2?family=Open+Sans&display=swap");
+#link {
+  display: block;
+  margin: 0 auto;
+  width: 80%;
+  height: 50px;
+  padding: 5px;
 }
 
 .container {
-  height: 100vh;
   width: 100vw;
 }
 
-#navbar{
+#navbar {
   padding-left: 5%;
   padding-right: 5%;
   border-bottom: 1px solid black;
 }
 
-body{
-  font-family: 'Open Sans', sans-serif;
+body {
+  font-family: "Open Sans", sans-serif;
 }
 
-
-#submit-button{
+#submit-button {
   display: block;
-  margin : 0 auto;
+  margin: 0 auto;
   width: 80%;
   height: 50px;
   background-color: black;
   color: white;
-  transition-duration: .2s;
+  transition-duration: 0.2s;
   border-radius: 10px;
   text-decoration: none;
   border: 1px solid black;
 }
 
-#submit-button:hover{
+#submit-button:hover {
   background-color: white;
   color: black;
 }
 
-#homepage{
+#homepage {
   margin-top: 100px;
 }
