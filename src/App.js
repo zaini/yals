@@ -1,17 +1,22 @@
 // import React, {useState} from 'react';
 import logo from './logo.svg';
 import './App.css';
+import {BrowserRouter as Router, Route} from "react-router-dom";
 import React from 'react';
 import {Button, Container, Form, FormControl, Nav, Navbar} from 'react-bootstrap';
 import './App.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
+import HomePage from "./components/HomePage.js";
+// import AboutPage from "./components/ContactPage";
+// import SearchPage from "./components/LoginPage";
+// import ContactPage from "./components/SignUpPage";
 
 function App() {
   // const [list, setList] = useState(["apple", "oranges"]);
 
   return (
-    <div>
-        <Navbar bg="white" expand="lg">
+    <div id="page">
+        <Navbar bg="white" expand="lg" id="navbar">
             <Navbar.Brand href="/">
                 <img
                     alt=""
@@ -26,41 +31,17 @@ function App() {
               <Nav className="ml-auto">
                   <Nav.Link href="/contact">Contact</Nav.Link>
                   <Nav.Link href="/login">Login</Nav.Link>
-                  <Nav.Link id="signup" href="/signUp">Sign Up</Nav.Link>
+                  <Nav.Link href="/signup">Sign Up</Nav.Link>
               </Nav>
             </Navbar.Collapse>
         </Navbar>
-        <hr></hr>
-        <div>
-          <form class="wrapper">
-            <input type="text" id="link" placeholder="Make your links shorter"></input>
-            <input type="submit" id="link"value="Convert!"></input>
-          </form> 
-          <div class='loader'>
-            <div class='loader--dot'></div>
-            <div class='loader--dot'></div>
-            <div class='loader--dot'></div>
-            <div class='loader--dot'></div>
-            <div class='loader--dot'></div>
-            <div class='loader--dot'></div>
-            <div class='loader--text'></div>
-          </div>
-        </div>
+        <Router>
+          <Route exact path={"/"} component={HomePage}/>
+          {/* <Route path={"/contact"} component={ContactPage}/>
+          <Route path={"/login"} component={LoginPage}/>
+          <Route path={"/signup"} component={SignUpPage}/> */}
+        </Router>
     </div>
   );
 }
-
 export default App;
-  //   <div id="main">
-  //     <h1>fruits</h1>
-  //     <p>fruit list</p>
-  //     <ul id="fruit-list">
-  //     {
-  //       list.map(fruit => {
-  //         return <li>{fruit}</li>
-  //       })
-  //     }
-  //     <button onClick={()=>setList([list, "random fruit"])}>add fruit</button>
-  //     </ul>
-  //   </div>
-  // );
