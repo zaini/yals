@@ -1,6 +1,10 @@
-import React, { useState, Component } from "react";
+import React, { Component } from "react";
 import { Button, Container } from "react-bootstrap";
-const { createApolloFetch } = require('apollo-fetch');
+const { createApolloFetch } = require("apollo-fetch");
+
+const fetch = createApolloFetch({
+  uri: "http://localhost:4000/graphql",
+});
 
 export default class HomePage extends Component {
   constructor(props) {
@@ -8,30 +12,29 @@ export default class HomePage extends Component {
 
     this.state = {
       link: "",
+      short_link: undefined,
     };
   }
 
   shorten() {
-    const fetch = createApolloFetch({
-        uri: 'http://localhost:4000/graphql',
-      });
-
     console.log(this.state.link);
 
     fetch({
-        query: `{
+      query: `{
             link_by_base_url(Base_URL: "${this.state.link}"){
               id
               Short_URL
               Base_URL
             }
-          }`
-    }).then(res => {
-        var x = res["data"]
-        var x = x["link_by_base_url"]
-        console.log(x[0].Short_URL)
-        return x[0].Short_URL;
-    })
+          }`,
+    }).then((res) => {
+      if (res.data.link_by_base_url[0] != undefined) {
+        console.log(res.data.link_by_base_url[0].Short_URL);
+        this.setState({ short_link: res.data.link_by_base_url[0].Short_URL });
+      } else {
+        console.log("Did not find a link");
+      }
+    });
   }
 
   render() {
@@ -41,12 +44,26 @@ export default class HomePage extends Component {
           id="link"
           placeholder="Make your links shorter"
           value={this.state.link}
-          onChange={(e) => this.setState({ link: e.target.value })}
+          onKeyDown={(e) => {
+            if (e.key === "Enter") {
+              this.shorten();
+            }
+          }}
+          onChange={(e) => {
+            this.setState({ link: e.target.value });
+          }}
         ></input>
         <br />
+
         <Button id="submit-button" onClick={() => this.shorten()}>
           Convert!
         </Button>
+        <br />
+
+        <Container id="result">
+          {this.state.short_link != undefined ? this.state.short_link : ""}
+        </Container>
+
       </Container>
     );
   }

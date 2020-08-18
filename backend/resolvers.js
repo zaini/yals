@@ -1,6 +1,6 @@
 const { gql } = require("apollo-server-express");
 const Link = require("./models/Link");
-const shortid = require("shortid");
+const { nanoid } = require("nanoid");
 require("dotenv").config();
 
 const domain = process.env.DOMAIN;
@@ -21,7 +21,7 @@ const resolvers = {
           console.log(`${Base_URL} does not exist. Creating and returning a new Link.`);
           const link = new Link({
             Base_URL: Base_URL,
-            Short_URL: domain + shortid.generate(),
+            Short_URL: domain + nanoid(7),
           });
           return link.save();
         } else {
