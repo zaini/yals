@@ -27,7 +27,10 @@ export default class HomePage extends Component {
             }
           }`
     }).then(res => {
-        console.log(res)
+        var x = res["data"]
+        var x = x["link_by_base_url"]
+        console.log(x[0].Short_URL)
+        return x[0].Short_URL;
     })
   }
 
