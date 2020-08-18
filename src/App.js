@@ -6,6 +6,7 @@ import {Button, Container, Form, FormControl, Nav, Navbar} from 'react-bootstrap
 import './App.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import HomePage from "./components/HomePage.js";
+import RedirectPage from "./components/RedirectPage.js";
 // import AboutPage from "./components/ContactPage";
 // import SearchPage from "./components/LoginPage";
 // import ContactPage from "./components/SignUpPage";
@@ -34,6 +35,7 @@ function App() {
         </Navbar>
         <Router>
           <Route exact path={"/"} component={HomePage}/>
+          <Route exact path={"/:short_id"} component={RedirectPage}/>
           {/* <Route path={"/contact"} component={ContactPage}/>
           <Route path={"/login"} component={LoginPage}/>
           <Route path={"/signup"} component={SignUpPage}/> */}
