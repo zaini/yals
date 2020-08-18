@@ -1,4 +1,4 @@
-import React, { useState, Component } from "react";
+import React, { Component } from "react";
 import { Button, Container } from "react-bootstrap";
 const { createApolloFetch } = require("apollo-fetch");
 
@@ -12,6 +12,7 @@ export default class HomePage extends Component {
 
     this.state = {
       link: "",
+      short_link: undefined,
     };
   }
 
@@ -27,7 +28,12 @@ export default class HomePage extends Component {
             }
           }`,
     }).then((res) => {
-      console.log(res.data.link_by_base_url[0]);
+      if (res.data.link_by_base_url[0] != undefined) {
+        console.log(res.data.link_by_base_url[0].Short_URL);
+        this.setState({ short_link: res.data.link_by_base_url[0].Short_URL });
+      } else {
+        console.log("Did not find a link");
+      }
     });
   }
 
@@ -38,15 +44,26 @@ export default class HomePage extends Component {
           id="link"
           placeholder="Make your links shorter"
           value={this.state.link}
-          onKeyDown={(e) => {if(e.key === 'Enter'){this.shorten()}}}
+          onKeyDown={(e) => {
+            if (e.key === "Enter") {
+              this.shorten();
+            }
+          }}
           onChange={(e) => {
             this.setState({ link: e.target.value });
           }}
         ></input>
         <br />
+
         <Button id="submit-button" onClick={() => this.shorten()}>
           Convert!
         </Button>
+        <br />
+
+        <Container id="result">
+          {this.state.short_link != undefined ? this.state.short_link : ""}
+        </Container>
+
       </Container>
     );
   }
