@@ -1,9 +1,6 @@
 const { gql } = require("apollo-server-express");
 const Link = require("./models/Link");
 const { nanoid } = require("nanoid");
-require("dotenv").config();
-
-const domain = process.env.DOMAIN;
 
 // Writing what each function actually returns. This should be from mongoDB
 const resolvers = {
@@ -15,15 +12,19 @@ const resolvers = {
   Mutation: {
     // First argument is parent, which we don't need. Second parameter is the arguments, so we destructure for what we want.
     createLink: (_, { Base_URL }) => {
-      Link.findOne({ Base_URL: Base_URL }, (err, res) => {
-        if (res == null) {
+      return Link.findOne({ Base_URL: Base_URL }, async (err, res) => {
+        if (res === null) {
           // If a Link doesn't exists for the given URL, create and return a Link
           console.log(`${Base_URL} does not exist. Creating and returning a new Link.`);
           const link = new Link({
             Base_URL: Base_URL,
-            Short_URL: domain + nanoid(7),
+            Short_URL: nanoid(7),
           });
-          return link.save();
+          await link.save((err, doc) => {
+            console.log(`saved document ${doc}`)
+          });
+          console.log(`returning link ${link}`);
+          return link;
         } else {
           // If a Link already exists for the given URL, return that Link
           console.log(`${Base_URL} does exist. Returning ${res}.`);

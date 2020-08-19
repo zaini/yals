@@ -17,10 +17,9 @@ export default class RedirectPage extends Component {
   }
 
   redirect() {
-    // TODO once backend has been changed, remnoved the azaini.me from the query
     fetch({
       query: `{
-            link_by_short_url(Short_URL: "azaini.me/${this.state.short_link}"){
+            link_by_short_url(Short_URL: "${this.state.short_link}"){
               id
               Short_URL
               Base_URL
