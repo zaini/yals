@@ -1,14 +1,14 @@
 import './App.css';
-import {BrowserRouter as Router, Route} from "react-router-dom";
+import {BrowserRouter as Router, Route, Switch} from "react-router-dom";
 import React from 'react';
 import {Nav, Navbar} from 'react-bootstrap';
 import './App.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import HomePage from "./components/HomePage.js";
-import RedirectPage from "./components/RedirectPage.js";
-// import AboutPage from "./components/ContactPage";
-// import SearchPage from "./components/LoginPage";
-// import ContactPage from "./components/SignUpPage";
+import HomePage from "./pages/HomePage.js";
+import RedirectPage from "./pages/RedirectPage.js";
+import ContactPage from "./pages/ContactPage";
+import LoginPage from "./pages/LoginPage";
+import SignUpPage from "./pages/SignUpPage";
 
 function App() {
   return (
@@ -33,11 +33,13 @@ function App() {
             </Navbar.Collapse>
         </Navbar>
         <Router>
-          <Route exact path={"/"} component={HomePage}/>
-          <Route exact path={"/:short_id"} component={RedirectPage}/>
-          {/* <Route path={"/contact"} component={ContactPage}/>
-          <Route path={"/login"} component={LoginPage}/>
-          <Route path={"/signup"} component={SignUpPage}/> */}
+          <Switch>
+            <Route exact path={"/"} component={HomePage}/>
+            <Route path={"/contact"} component={ContactPage}/>
+            <Route path={"/login"} component={LoginPage}/>
+            <Route path={"/signup"} component={SignUpPage}/>
+            <Route exact path={"/:short_id"} component={RedirectPage}/>
+          </Switch>
         </Router>
     </div>
   );
