@@ -6,7 +6,8 @@ const { nanoid } = require("nanoid");
 const resolvers = {
   Query: {
     links: () => Link.find(),
-    link_by_short_url: (_, { Short_URL }) => Link.findOne({ Short_URL: Short_URL }),
+    link_by_short_url: (_, { Short_URL }) =>
+      Link.findOne({ Short_URL: Short_URL }),
     link_by_base_url: (_, { Base_URL }) => Link.find({ Base_URL: Base_URL }),
   },
   Mutation: {

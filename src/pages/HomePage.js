@@ -20,16 +20,30 @@ export default class HomePage extends Component {
 
   shorten() {
     fetch({
-      query: `mutation{
-        createLink(Base_URL: "${this.state.link}"){
-          Short_URL
-        }
-      }`,
+      query: `{link_by_base_url(Base_URL: "${this.state.link}"){
+        Short_URL
+      }
+    }`,
     }).then((res) => {
-      if (res) {
-        this.setState({ short_link: res.data.createLink.Short_URL });
+      console.log(res.data.link_by_base_url);
+      if (res.data.link_by_base_url[0]) {
+        console.log("Found existing link");
+        this.setState({ short_link: res.data.link_by_base_url[0].Short_URL });
       } else {
-        console.log("Did not find a link");
+        console.log("Did not find an existing link. Creating new one.");
+        fetch({
+          query: `mutation{
+            createLink(Base_URL: "${this.state.link}"){
+              Short_URL
+            }
+          }`,
+        }).then((res) => {
+          if (res) {
+            this.setState({ short_link: res.data.createLink.Short_URL });
+          } else {
+            console.log("Did not create a link successfully");
+          }
+        });
       }
     });
   }
