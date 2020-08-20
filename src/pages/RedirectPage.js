@@ -24,8 +24,7 @@ export default class RedirectPage extends Component {
             }
           }`,
     }).then((res) => {
-      console.log(res.data)
-      if (res.data.link_by_short_url !== undefined) {
+      if (res.data.link_by_short_url) {
         this.setState({ link: res.data.link_by_short_url.Base_URL });
       } else {
         console.log("Did not find a link");
@@ -44,7 +43,7 @@ export default class RedirectPage extends Component {
     return (
       <Container id="redirect">
         {this.state.link !== undefined
-          ? this.state.link
+          ? `Redirecting to ${this.state.link}...`
           : "Trying to find your link... if it doesn't load, it proabably doesn't exist"}
       </Container>
     );
