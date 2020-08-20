@@ -4,7 +4,7 @@ const { gql } = require("apollo-server-express");
 const typeDefs = gql`
   type Query {
     links: [Link]!
-    link_by_short_url(Short_URL: String!): [Link]
+    link_by_short_url(Short_URL: String!): Link
     link_by_base_url(Base_URL: String!): [Link]
   }
   type Link {

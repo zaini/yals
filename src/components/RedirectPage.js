@@ -12,7 +12,7 @@ export default class RedirectPage extends Component {
 
     this.state = {
       short_link: this.props.match.params.short_id,
-      link: undefined
+      link: undefined,
     };
   }
 
@@ -20,16 +20,13 @@ export default class RedirectPage extends Component {
     fetch({
       query: `{
             link_by_short_url(Short_URL: "${this.state.short_link}"){
-              id
-              Short_URL
               Base_URL
             }
           }`,
     }).then((res) => {
-      console.log(this.state.short_link, res);
-      if (res.data.link_by_short_url[0] != undefined) {
-        console.log(res.data.link_by_short_url[0].Base_URL);
-        this.setState({ link: res.data.link_by_short_url[0].Base_URL });
+      console.log(res.data)
+      if (res.data.link_by_short_url !== undefined) {
+        this.setState({ link: res.data.link_by_short_url.Base_URL });
       } else {
         console.log("Did not find a link");
       }
@@ -46,7 +43,9 @@ export default class RedirectPage extends Component {
     }
     return (
       <Container id="redirect">
-        {this.state.link != undefined ? this.state.link : "Tryin to find your link... if it doesn't load, it proabably doesn't exist"}
+        {this.state.link !== undefined
+          ? this.state.link
+          : "Trying to find your link... if it doesn't load, it proabably doesn't exist"}
       </Container>
     );
   }

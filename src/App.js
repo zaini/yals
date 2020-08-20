@@ -1,8 +1,7 @@
-import logo from './logo.svg';
 import './App.css';
 import {BrowserRouter as Router, Route} from "react-router-dom";
 import React from 'react';
-import {Button, Container, Form, FormControl, Nav, Navbar} from 'react-bootstrap';
+import {Nav, Navbar} from 'react-bootstrap';
 import './App.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import HomePage from "./components/HomePage.js";

@@ -19,8 +19,6 @@ export default class HomePage extends Component {
   }
 
   shorten() {
-    console.log(this.state.link);
-
     fetch({
       query: `mutation{
         createLink(Base_URL: "${this.state.link}"){
@@ -28,7 +26,6 @@ export default class HomePage extends Component {
         }
       }`,
     }).then((res) => {
-      console.log(res)
       if (res) {
         this.setState({ short_link: res.data.createLink.Short_URL });
       } else {
@@ -61,7 +58,9 @@ export default class HomePage extends Component {
         <br />
 
         <Container id="result">
-          {this.state.short_link != undefined ? domain + this.state.short_link : ""}
+          {this.state.short_link !== undefined
+            ? domain + this.state.short_link
+            : ""}
         </Container>
       </Container>
     );
