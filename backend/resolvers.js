@@ -1,6 +1,8 @@
 const { gql } = require("apollo-server-express");
 const Link = require("./models/Link");
 const { nanoid } = require("nanoid");
+const argon2 = require("argon2");
+const User = require("./models/User");
 
 // Writing what each function actually returns. This should be from mongoDB
 const resolvers = {
@@ -9,6 +11,7 @@ const resolvers = {
     link_by_short_url: (_, { Short_URL }) =>
       Link.findOne({ Short_URL: Short_URL }),
     link_by_base_url: (_, { Base_URL }) => Link.find({ Base_URL: Base_URL }),
+    users: () => User.find(),
   },
   Mutation: {
     // First argument is parent, which we don't need. Second parameter is the arguments, so we destructure for what we want.
@@ -19,6 +22,59 @@ const resolvers = {
       });
       link.save();
       return link;
+    },
+    registerUser: async (_, user_details) => {
+      // TODO Requires validation
+      const hashedPassword = await argon2.hash(user_details.Password);
+      const user = new User({
+        Created_At: new Date(),
+        Email: user_details.Email,
+        UserName: user_details.UserName,
+        Password: hashedPassword,
+      });
+      user.save();
+      return user;
+    },
+    login: async (_, user_details) => {
+      // Could use a validation library instead of these if statements for checking length
+      if (user_details.Email.length <= 6){
+        return {
+          errors: [
+            { field: "email", message: "that email is too short" },
+          ],
+        };
+      }
+
+      if (user_details.Password.length <= 7){
+        return {
+          errors: [
+            { field: "password", message: "that password is too short" },
+          ],
+        };
+      }
+
+      const user = await User.findOne({ Email: user_details.Email });
+      if (user === null) {
+        return {
+          errors: [
+            { field: "email", message: "that email doesn't exist" },
+          ],
+        };
+      }
+      const validPassword = await argon2.verify(
+        user.Password,
+        user_details.Password
+      );
+      if (!validPassword) {
+        return {
+          errors: [
+            { field: "password", message: "that password is incorrect" },
+          ],
+        };
+      }
+      return {
+        user: user,
+      };
     },
   },
 };
