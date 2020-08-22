@@ -12,6 +12,14 @@ const resolvers = {
       Link.findOne({ Short_URL: Short_URL }),
     link_by_base_url: (_, { Base_URL }) => Link.find({ Base_URL: Base_URL }),
     users: () => User.find(),
+    me: async (_, __, { req }) => {
+      // not logged in
+      if (req.session.userID === null) {
+        return null;
+      }
+      const user = await User.findOne({ _id: req.session.userID });
+      return user;
+    },
   },
   Mutation: {
     // First argument is parent, which we don't need. Second parameter is the arguments, so we destructure for what we want.
@@ -23,7 +31,7 @@ const resolvers = {
       link.save();
       return link;
     },
-    registerUser: async (_, user_details) => {
+    registerUser: async (_, user_details, { req }) => {
       // TODO Requires validation
       const hashedPassword = await argon2.hash(user_details.Password);
       const user = new User({
@@ -33,19 +41,18 @@ const resolvers = {
         Password: hashedPassword,
       });
       user.save();
+      req.session.userID = user.id; // storing the users id in the cookie session, essentially logging them in
       return user;
     },
-    login: async (_, user_details) => {
+    login: async (_, user_details, { req }) => {
       // Could use a validation library instead of these if statements for checking length
-      if (user_details.Email.length <= 6){
+      if (user_details.Email.length <= 6) {
         return {
-          errors: [
-            { field: "email", message: "that email is too short" },
-          ],
+          errors: [{ field: "email", message: "that email is too short" }],
         };
       }
 
-      if (user_details.Password.length <= 7){
+      if (user_details.Password.length <= 7) {
         return {
           errors: [
             { field: "password", message: "that password is too short" },
@@ -56,9 +63,7 @@ const resolvers = {
       const user = await User.findOne({ Email: user_details.Email });
       if (user === null) {
         return {
-          errors: [
-            { field: "email", message: "that email doesn't exist" },
-          ],
+          errors: [{ field: "email", message: "that email doesn't exist" }],
         };
       }
       const validPassword = await argon2.verify(
@@ -72,6 +77,9 @@ const resolvers = {
           ],
         };
       }
+
+      req.session.userID = user.id;
+
       return {
         user: user,
       };
