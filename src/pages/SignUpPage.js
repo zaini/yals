@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Container } from "react-bootstrap";
+import { Box } from "@chakra-ui/core";
 
 export default class SignUpPage extends Component {
   constructor(props) {
@@ -10,9 +10,9 @@ export default class SignUpPage extends Component {
 
   render() {
     return (
-      <Container>
+      <Box>
         This is a SignUpPage
-      </Container>
+      </Box>
     );
   }
 }

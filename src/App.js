@@ -1,37 +1,41 @@
 import "./App.css";
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 import React from "react";
-import { Nav, Navbar } from "react-bootstrap";
-import "./App.css";
-import "bootstrap/dist/css/bootstrap.min.css";
 import HomePage from "./pages/HomePage.js";
 import RedirectPage from "./pages/RedirectPage.js";
 import ContactPage from "./pages/ContactPage";
 import LoginPage from "./pages/LoginPage";
 import SignUpPage from "./pages/SignUpPage";
+import { Box, Flex, Text, Image, Link, Button, useColorMode } from "@chakra-ui/core";
 
 function App() {
+  const { colorMode, toggleColorMode } = useColorMode();
+
   return (
-    <div id="page">
-      <Navbar bg="white" expand="lg" id="navbar">
-        <Navbar.Brand href="/">
-          <img
-            alt=""
-            src="logo.jpg"
-            width="50"
-            height="41"
-            className="d-inline-block align-top"
+    <Box>
+      <Flex
+        className="navbar-header"
+        justifyContent="space-between"
+        alignItems="center"
+      >
+        <Flex flexDirection="row" justifyContent="center" alignItems="center">
+          <Image
+            src="https://freight.cargo.site/t/original/i/245e7cd460861c15daaba23637d2849a9ebb7e664f16553e814b3bea47681eb9/AA_logo_transparent-bg.png"
+            size={70}
           />
-        </Navbar.Brand>
-        <Navbar.Toggle aria-controls="basic-navbar-nav" />
-        <Navbar.Collapse id="basic-navbar-nav">
-          <Nav className="ml-auto">
-            <Nav.Link href="/contact">Contact</Nav.Link>
-            <Nav.Link href="/login">Login</Nav.Link>
-            <Nav.Link href="/signup">Sign Up</Nav.Link>
-          </Nav>
-        </Navbar.Collapse>
-      </Navbar>
+          <Text pl={3}>Link-Shortener</Text>
+        </Flex>
+        <Box className="navbar-links">
+          <Link href={"/"}>Home</Link>
+          <Link href={"/contact"}>Contact</Link>
+          <Link href={"/login"}>Login</Link>
+          <Link href={"/signup"}>Sign Up</Link>
+          <Button onClick={toggleColorMode}>
+            Toggle {colorMode === "light" ? "Dark" : "Light"}
+          </Button>
+        </Box>
+      </Flex>
+
       <Router>
         <Switch>
           <Route exact path={"/"} component={HomePage} />
@@ -41,7 +45,7 @@ function App() {
           <Route exact path={"/:short_id"} component={RedirectPage} />
         </Switch>
       </Router>
-    </div>
+    </Box>
   );
 }
 export default App;

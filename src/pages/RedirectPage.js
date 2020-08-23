@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Container } from "react-bootstrap";
+import { Box } from "@chakra-ui/core";
 const { createApolloFetch } = require("apollo-fetch");
 
 const fetch = createApolloFetch({
@@ -41,11 +41,11 @@ export default class RedirectPage extends Component {
       window.location.replace("//" + this.state.link);
     }
     return (
-      <Container id="redirect">
+      <Box id="redirect">
         {this.state.link !== undefined
           ? `Redirecting to ${this.state.link}...`
           : "Trying to find your link... if it doesn't load, it proabably doesn't exist"}
-      </Container>
+      </Box>
     );
   }
 }

@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Button, Container } from "react-bootstrap";
+import { Box, Button, Input } from "@chakra-ui/core";
 const { createApolloFetch } = require("apollo-fetch");
 
 const domain = "azaini.me/";
@@ -50,9 +50,8 @@ export default class HomePage extends Component {
 
   render() {
     return (
-      <Container id="homepage">
-        <input
-          id="link"
+      <Box id="homepage">
+        <Input
           placeholder="Make your links shorter"
           value={this.state.link}
           onKeyDown={(e) => {
@@ -63,7 +62,7 @@ export default class HomePage extends Component {
           onChange={(e) => {
             this.setState({ link: e.target.value });
           }}
-        ></input>
+        ></Input>
         <br />
 
         <Button id="submit-button" onClick={() => this.shorten()}>
@@ -71,12 +70,12 @@ export default class HomePage extends Component {
         </Button>
         <br />
 
-        <Container id="result">
+        <Box id="result">
           {this.state.short_link !== undefined
             ? domain + this.state.short_link
             : ""}
-        </Container>
-      </Container>
+        </Box>
+      </Box>
     );
   }
 }
