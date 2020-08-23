@@ -1,12 +1,9 @@
 import React, { Component } from "react";
 import { Box, Button, Input } from "@chakra-ui/core";
-const { createApolloFetch } = require("apollo-fetch");
+import { createApolloFetch } from 'apollo-fetch';
 
 const domain = "azaini.me/";
-
-const fetch = createApolloFetch({
-  uri: "http://localhost:4000/graphql",
-});
+const fetch = createApolloFetch({ uri: "http://localhost:4000/graphql" });
 
 export default class HomePage extends Component {
   constructor(props) {

@@ -9,7 +9,7 @@ import SignUpPage from "./pages/SignUpPage";
 import { Box, Flex, Text, Image, Link, Button, useColorMode } from "@chakra-ui/core";
 
 function App() {
-  const { colorMode, toggleColorMode } = useColorMode();
+  const { colorMode, toggleColorMode } = useColorMode;
 
   return (
     <Box>

@@ -9,3 +9,5 @@ Frontend: React, Chakra UI
 Backend: Node.js/Express, Apollo GraphQL, Mongoose
 
 Data: MongoDB, Redis
+
+Forms: Formik

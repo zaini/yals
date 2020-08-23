@@ -13,6 +13,7 @@
     "apollo-server-express": "^2.16.1",
     "argon2": "^0.27.0",
     "connect-redis": "^5.0.0",
+    "cors": "^2.8.5",
     "dotenv": "^8.2.0",
     "emotion-theming": "^10.0.27",
     "express": "^4.17.1",
@@ -25,7 +26,8 @@
     "react-dom": "^16.13.1",
     "react-router-dom": "^5.2.0",
     "react-scripts": "3.4.3",
-    "redis": "^3.0.2"
+    "redis": "^3.0.2",
+    "urql": "^1.10.0"
   },
   "scripts": {
     "start": "react-scripts start",

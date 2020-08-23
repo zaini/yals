@@ -4,22 +4,30 @@ const mongoose = require("mongoose");
 const resolvers = require("./resolvers");
 const typeDefs = require("./typeDefs");
 require("dotenv").config();
-const redis = require('redis');
-const session = require('express-session');
+const redis = require("redis");
+const session = require("express-session");
+const cors = require("cors");
 
-const RedisStore = require('connect-redis')(session);
+const RedisStore = require("connect-redis")(session);
 const redisClient = redis.createClient();
 
 const app = express();
 
 app.use(
+  cors({
+    origin: "http://localhost:3000",
+    credentials: true,
+  })
+);
+
+app.use(
   session({
-    name: 'qid',
+    name: "qid",
     store: new RedisStore({ client: redisClient, disableTouch: true }),
     cookie: {
       maxAge: 1000 * 60 * 60 * 24 * 365 * 10, // decade
       httpOnly: true, // cannot be accessed by frontend
-      sameSite: 'lax', // IDK what this does, should research it
+      sameSite: "lax", // IDK what this does, should research it
     },
     secret: "myrandomstringwhichiwillputintoanenvvariablelaterlol",
     resave: false,
@@ -38,12 +46,12 @@ connection.once("open", () => {
 const server = new ApolloServer({
   typeDefs,
   resolvers,
-  context: ({req, res}) => {
-    return {req, res}
-  }
+  context: ({ req, res }) => {
+    return { req, res };
+  },
 });
 
-server.applyMiddleware({ app });
+server.applyMiddleware({ app, cors: false });
 
 const port = process.env.PORT || 4000;
 app.listen(port, () =>
