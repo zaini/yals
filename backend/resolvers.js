@@ -42,7 +42,7 @@ const resolvers = {
       });
       user.save();
       req.session.userID = user.id; // storing the users id in the cookie session, essentially logging them in
-      return user;
+      return { user: user };
     },
     login: async (_, user_details, { req }) => {
       // Could use a validation library instead of these if statements for checking length

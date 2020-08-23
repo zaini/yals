@@ -30,7 +30,7 @@ const typeDefs = gql`
   }
   type Mutation {
     createLink(Base_URL: String!): Link!
-    registerUser(Email: String!, UserName: String!, Password: String!): User!
+    registerUser(Email: String!, UserName: String!, Password: String!): UserResponse!
     login(Email: String!, Password: String!): UserResponse!
   }
 `;
