@@ -36,7 +36,12 @@ export default class RedirectPage extends Component {
 
   render() {
     if (this.state.link !== undefined) {
-      window.location.replace("//" + this.state.link);
+      if(this.state.link.indexOf("http") != -1){
+        window.location.replace(this.state.link);
+      }
+      else{
+        window.location.replace("//" + this.state.link);
+      }
     }
     return (
       <Box id="redirect">
