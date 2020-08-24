@@ -1,8 +1,7 @@
 import React, { Component, useState } from "react";
-import { Box, Button, Input } from "@chakra-ui/core";
+import { Box, Button, Input, Icon } from "@chakra-ui/core";
 import { createApolloFetch } from "apollo-fetch";
 import { CopyToClipboard } from 'react-copy-to-clipboard';
-import { FaRegCopy, FaRegClipboard } from 'react-icons/fa'
 var QRCode = require("qrcode.react");
 
 const domain = "azaini.me/";
@@ -73,14 +72,14 @@ export default class HomePage extends Component {
         <Box id="result">
           {this.state.short_link !== undefined
             ? [
-                domain + this.state.short_link ,
-                <CopyToClipboard id="copyButton" text={domain + this.state.short_link} onCopy={() => this.setState({copied: true})}>
-                  <button>
-                    {this.state.copied ? <FaRegClipboard/> :<FaRegCopy/>}
-                  </button>
-                </CopyToClipboard>,
-                <QRCode value={domain + this.state.short_link} />,
-              ]
+              domain + this.state.short_link,
+              <CopyToClipboard id="copyButton" text={domain + this.state.short_link} onCopy={() => this.setState({ copied: true })}>
+                <button>
+                  {this.state.copied ? <Icon name="check" /> : <Icon name="copy" />}
+                </button>
+              </CopyToClipboard>,
+              <QRCode value={domain + this.state.short_link} />,
+            ]
             : null}
         </Box>
       </Box>
