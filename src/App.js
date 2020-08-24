@@ -6,7 +6,7 @@ import RedirectPage from "./pages/RedirectPage.js";
 import ContactPage from "./pages/ContactPage";
 import LoginPage from "./pages/LoginPage";
 import SignUpPage from "./pages/SignUpPage";
-import { Box, Flex, Text, Image, Link, Button, useColorMode } from "@chakra-ui/core";
+import { Box, Flex, Text, Image, Link, Button, useColorMode, Icon } from "@chakra-ui/core";
 
 function App() {
   const { colorMode, toggleColorMode } = useColorMode();
@@ -26,12 +26,12 @@ function App() {
           <Text pl={3}>Link-Shortener</Text>
         </Flex>
         <Box className="navbar-links">
-          <Link href={"/"}>Home</Link>
-          <Link href={"/contact"}>Contact</Link>
-          <Link href={"/login"}>Login</Link>
-          <Link href={"/signup"}>Sign Up</Link>
-          <Button onClick={toggleColorMode}>
-            Toggle {colorMode === "light" ? "Dark" : "Light"}
+          <Link className="link" href={"/"}>Home</Link>
+          <Link className="link" href={"/contact"}>Contact</Link>
+          <Link className="link" href={"/login"}>Login</Link>
+          <Link className="link" href={"/signup"}>Sign Up</Link>
+          <Button onClick={toggleColorMode} marginRight="50px">
+            {colorMode === "light" ? <Icon name="moon" width="auto"/> : <Icon name="sun" />}
           </Button>
         </Box>
       </Flex>
