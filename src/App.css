@@ -1,3 +1,7 @@
 .navbar-links .link{
     margin-right: 50px;
 }
+
+#result{
+    position: relative;
+}

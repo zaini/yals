@@ -1,6 +1,8 @@
-import React, { Component } from "react";
-import { Box, Button, Input, useClipboard } from "@chakra-ui/core";
+import React, { Component, useState } from "react";
+import { Box, Button, Input } from "@chakra-ui/core";
 import { createApolloFetch } from "apollo-fetch";
+import { CopyToClipboard } from 'react-copy-to-clipboard';
+import { FaRegCopy, FaRegClipboard } from 'react-icons/fa'
 var QRCode = require("qrcode.react");
 
 const domain = "azaini.me/";
@@ -9,10 +11,10 @@ const fetch = createApolloFetch({ uri: "http://localhost:4000/graphql" });
 export default class HomePage extends Component {
   constructor(props) {
     super(props);
-
     this.state = {
       link: "",
       short_link: undefined,
+      copied: false,
     };
   }
 
@@ -71,7 +73,12 @@ export default class HomePage extends Component {
         <Box id="result">
           {this.state.short_link !== undefined
             ? [
-                domain + this.state.short_link,
+                domain + this.state.short_link ,
+                <CopyToClipboard id="copyButton" text={domain + this.state.short_link} onCopy={() => this.setState({copied: true})}>
+                  <button>
+                    {this.state.copied ? <FaRegClipboard/> :<FaRegCopy/>}
+                  </button>
+                </CopyToClipboard>,
                 <QRCode value={domain + this.state.short_link} />,
               ]
             : null}
