@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React from "react";
 import { Box, Button, Input } from "@chakra-ui/core";
 import { useForm } from "react-hook-form";
 import { useMutation } from "urql";
