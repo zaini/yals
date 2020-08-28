@@ -6,6 +6,7 @@ import RedirectPage from "./pages/RedirectPage.js";
 import ContactPage from "./pages/ContactPage";
 import LoginPage from "./pages/LoginPage";
 import SignUpPage from "./pages/SignUpPage";
+import AccountPage from "./pages/AccountPage";
 import {
   Box,
   Flex,
@@ -48,7 +49,7 @@ function App() {
         <Button
           onClick={() => {
             logout();
-            window.location.reload();
+            window.location.replace("/");
           }}
           isLoading={res.fetching}
         >
@@ -108,6 +109,7 @@ function App() {
           <Route path={"/contact"} component={ContactPage} />
           <Route path={"/login"} component={LoginPage} />
           <Route path={"/signup"} component={SignUpPage} />
+          <Route path={"/account"} component={AccountPage} />
           <Route exact path={"/:short_id"} component={RedirectPage} />
         </Switch>
       </Router>
