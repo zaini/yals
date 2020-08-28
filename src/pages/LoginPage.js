@@ -44,7 +44,7 @@ export default function SignUpPage() {
       </form>
       <GoogleLogin
         clientId="110139847957-18v65kpfcpt8k5pc8n8galikf65mm4v8.apps.googleusercontent.com"
-        buttonText="Login"
+        buttonText="Login with Google"
         onSuccess={(res) => console.log(res)}
         onFailure={(res) => console.log(res)}
         cookiePolicy={"single_host_origin"}
