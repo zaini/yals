@@ -1,8 +1,14 @@
 import React from "react";
-import { Box, Input, Button } from "@chakra-ui/core";
-import GoogleLogin from "react-google-login";
+import {
+  Box,
+  Button,
+  Input,
+  FormControl,
+  FormErrorMessage,
+} from "@chakra-ui/core";
 import { useForm } from "react-hook-form";
 import { useMutation } from "urql";
+import GoogleLogin from "react-google-login";
 
 const LOGIN_MUTATION = `mutation Login($email: String!, $password: String!){
   login(Email: $email, Password: $password) {
@@ -22,24 +28,43 @@ const LOGIN_MUTATION = `mutation Login($email: String!, $password: String!){
 export default function SignUpPage() {
   const [res, loginUser] = useMutation(LOGIN_MUTATION);
 
-  const { register, handleSubmit, errors } = useForm();
-  const onSubmit = (data) => {
+  const { register, handleSubmit, errors, setError } = useForm();
+  const onSubmit = async (data) => {
     console.log(data);
-    loginUser(data);
+    const response = await loginUser(data);
+    console.log(response);
+    if (response.data?.login.errors !== null) {
+      response.data.login.errors.forEach(({ field, message }) => {
+        console.log(field, message);
+        setError(field, { type: "manual", message });
+      });
+    }
   };
 
   return (
     <Box mt={8} mx="auto" maxW="800px">
       <form onSubmit={handleSubmit(onSubmit)}>
-        <Input type="email" placeholder="email" name="email" ref={register} />
-        <Input
-          type="password"
-          placeholder="password"
-          name="password"
-          ref={register}
-        />
-        <Button mt={4} type="submit">
-          Login
+        <FormControl isInvalid={errors.email} mt={4}>
+          <Input type="email" placeholder="email" name="email" ref={register} />
+          <FormErrorMessage>
+            {errors.email && errors.email.message}
+          </FormErrorMessage>
+        </FormControl>
+
+        <FormControl isInvalid={errors.password} mt={4}>
+          <Input
+            type="password"
+            placeholder="password"
+            name="password"
+            ref={register}
+          />
+          <FormErrorMessage>
+            {errors.password && errors.password.message}
+          </FormErrorMessage>
+        </FormControl>
+
+        <Button mt={4} mb={4} type="submit">
+          Submit
         </Button>
       </form>
       <GoogleLogin
