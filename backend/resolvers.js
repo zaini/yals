@@ -32,7 +32,27 @@ const resolvers = {
       return link;
     },
     registerUser: async (_, user_details, { req }) => {
-      // TODO Requires validation
+      if (user_details.Email.length <= 6) {
+        return {
+          errors: [{ field: "email", message: "that email is too short" }],
+        };
+      }
+
+      if (user_details.Password.length <= 7) {
+        return {
+          errors: [
+            { field: "password", message: "that password is too short" },
+          ],
+        };
+      }
+
+      const existingUser = await User.findOne({ Email: user_details.Email });
+      if (existingUser !== null) {
+        return {
+          errors: [{ field: "email", message: "that email already exists" }],
+        };
+      }
+
       const hashedPassword = await argon2.hash(user_details.Password);
       const user = new User({
         Created_At: new Date(),
