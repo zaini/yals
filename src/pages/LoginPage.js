@@ -38,6 +38,9 @@ export default function SignUpPage() {
         console.log(field, message);
         setError(field, { type: "manual", message });
       });
+    } else {
+      console.log("Success");
+      window.location.replace("/account");
     }
   };
 
