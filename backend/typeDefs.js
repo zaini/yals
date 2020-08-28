@@ -32,6 +32,7 @@ const typeDefs = gql`
     createLink(Base_URL: String!): Link!
     registerUser(Email: String!, UserName: String!, Password: String!): UserResponse!
     login(Email: String!, Password: String!): UserResponse!
+    logout: Boolean!
   }
 `;
 

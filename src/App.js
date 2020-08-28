@@ -16,7 +16,7 @@ import {
   useColorMode,
   Icon,
 } from "@chakra-ui/core";
-import { useQuery } from "urql";
+import { useQuery, useMutation } from "urql";
 
 const ME_QUERY = `query {
   me {
@@ -25,15 +25,19 @@ const ME_QUERY = `query {
   }
 }`;
 
+const LOGOUT_MUTATION = `mutation {
+  logout
+}`;
+
 function App() {
-  const [res, reexecuteQuery] = useQuery({ query: ME_QUERY });
-  const { data, fetching, error } = res;
+  const [me_res, reexecuteQuery] = useQuery({ query: ME_QUERY });
+  const [res, logout] = useMutation(LOGOUT_MUTATION);
+  const { data, fetching, error } = me_res;
 
   const { colorMode, toggleColorMode } = useColorMode();
 
   let body = null;
 
-  console.log(data);
   if (fetching) {
   } else if (data.me !== null) {
     body = (
@@ -41,7 +45,14 @@ function App() {
         <Link className="link" href={"/account"}>
           {data.me.UserName}
         </Link>
-        <Button>Logout</Button>
+        <Button
+          onClick={() => {
+            logout();
+          }}
+          isLoading={res.fetching}
+        >
+          Logout
+        </Button>
       </>
     );
   } else {
