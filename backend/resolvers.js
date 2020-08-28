@@ -38,6 +38,14 @@ const resolvers = {
         };
       }
 
+      if (user_details.UserName.length <= 5) {
+        return {
+          errors: [
+            { field: "username", message: "that username is too short" },
+          ],
+        };
+      }
+
       if (user_details.Password.length <= 7) {
         return {
           errors: [
