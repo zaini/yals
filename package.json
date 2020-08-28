@@ -38,7 +38,8 @@
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "codegen": "graphql-codegen --config codegen.yml"
   },
   "eslintConfig": {
     "extends": "react-app"
@@ -56,6 +57,10 @@
     ]
   },
   "devDependencies": {
-    "nodemon": "^2.0.4"
+    "@graphql-codegen/cli": "1.17.8",
+    "nodemon": "^2.0.4",
+    "@graphql-codegen/typescript-react-apollo": "1.17.8",
+    "@graphql-codegen/typescript-graphql-files-modules": "1.17.8",
+    "@graphql-codegen/introspection": "1.17.8"
   }
 }
