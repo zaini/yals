@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { Box } from "@chakra-ui/core";
-import { createApolloFetch } from 'apollo-fetch';
+import { createApolloFetch } from "apollo-fetch";
 
 const fetch = createApolloFetch({ uri: "http://localhost:4000/graphql" });
 
@@ -36,10 +36,9 @@ export default class RedirectPage extends Component {
 
   render() {
     if (this.state.link !== undefined) {
-      if(this.state.link.indexOf("http") != -1){
+      if (this.state.link.indexOf("http") !== -1) {
         window.location.replace(this.state.link);
-      }
-      else{
+      } else {
         window.location.replace("//" + this.state.link);
       }
     }
