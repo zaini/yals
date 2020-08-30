@@ -20,6 +20,14 @@ const resolvers = {
       const user = await User.findOne({ _id: req.session.userID });
       return user;
     },
+    my_links: async (_, __, { req }) => {
+      // not logged in
+      if (req.session.userID === null) {
+        return null;
+      }
+      const links = await Link.find({ Created_By: req.session.userID });
+      return links;
+    },
   },
   Mutation: {
     // First argument is parent, which we don't need. Second parameter is the arguments, so we destructure for what we want.
