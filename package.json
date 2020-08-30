@@ -57,10 +57,6 @@
     ]
   },
   "devDependencies": {
-    "@graphql-codegen/cli": "1.17.8",
-    "nodemon": "^2.0.4",
-    "@graphql-codegen/typescript-react-apollo": "1.17.8",
-    "@graphql-codegen/typescript-graphql-files-modules": "1.17.8",
-    "@graphql-codegen/introspection": "1.17.8"
+    "nodemon": "^2.0.4"
   }
 }
