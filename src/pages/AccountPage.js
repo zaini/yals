@@ -10,15 +10,26 @@ const ME_QUERY = `query {
   }
 }`;
 
+const MY_LINKS_QUERY = `query {
+  my_links {
+    Base_URL
+    Short_URL
+    Created_At
+    Expires_At
+  }
+}`;
+
 export default function SignUpPage() {
-  const [me_res, reexecuteQuery] = useQuery({ query: ME_QUERY });
+  const [me_res] = useQuery({ query: ME_QUERY });
+  const [my_links_res] = useQuery({ query: MY_LINKS_QUERY });
   const { data, fetching, error } = me_res;
+  const { data: links_data, fetching: fetching_links, error: links_error } = my_links_res;
 
-  console.log(data);
+  console.log(data, links_data);
 
-  if (fetching) {
+  if (fetching || fetching_links) {
     return <p>fetching</p>;
-  } else if (error) {
+  } else if (error || links_error) {
     return <p>error fetching account</p>;
   } else {
     return (
@@ -29,6 +40,10 @@ export default function SignUpPage() {
         Username: {data.me.UserName}
         <Divider />
         Created: {data.me.Created_At}
+        <Divider />
+        {links_data.my_links.map((e, i) => {
+          return <p>{e.Base_URL} {e.Short_URL}</p>
+        })}
       </Box>
     );
   }

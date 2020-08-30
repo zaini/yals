@@ -25,6 +25,7 @@ const resolvers = {
       if (req.session.userID === null) {
         return null;
       }
+      console.log(req.session.userID);
       const links = await Link.find({ Created_By: req.session.userID });
       return links;
     },

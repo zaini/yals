@@ -30,7 +30,7 @@ const typeDefs = gql`
     link_by_base_url(Base_URL: String!): [Link]
     users: [User]!
     me: User
-    my_links: [Link]
+    my_links: [Link]!
   }
   type Mutation {
     createLink(Created_By: String, Expires_At: String, Base_URL: String!): Link!
