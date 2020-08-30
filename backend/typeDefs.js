@@ -4,6 +4,9 @@ const { gql } = require("apollo-server-express");
 const typeDefs = gql`
   type Link {
     id: ID!
+    Created_By: String
+    Created_At: String!
+    Expires_At: String
     Base_URL: String!
     Short_URL: String!
   }
@@ -29,7 +32,7 @@ const typeDefs = gql`
     me: User
   }
   type Mutation {
-    createLink(Base_URL: String!): Link!
+    createLink(Created_By: String, Expires_At: String, Base_URL: String!): Link!
     registerUser(Email: String!, UserName: String!, Password: String!): UserResponse!
     login(Email: String!, Password: String!): UserResponse!
     logout: Boolean!

@@ -4,7 +4,19 @@ const Schema = mongoose.Schema;
 const LinkSchema = new Schema({
   ID: {
     type: String,
-    required: [false, "Link must have an ID"],
+    required: [false, "Link must have an ID"], // ID will be generated automatically
+  },
+  Created_By: {
+    type: String,
+    required: [false],
+  },
+  Created_At: {
+    type: Date,
+    require: [true, "Link must have a creation date"],
+  },
+  Expires_At: {
+    type: Date,
+    require: [false],
   },
   Base_URL: {
     type: String,
