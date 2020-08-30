@@ -1,5 +1,5 @@
 import React from "react";
-import { Box, Heading, Divider } from "@chakra-ui/core";
+import { Box, Heading, Divider, Grid, IconButton } from "@chakra-ui/core";
 import { useQuery } from "urql";
 
 const ME_QUERY = `query {
@@ -23,7 +23,11 @@ export default function SignUpPage() {
   const [me_res] = useQuery({ query: ME_QUERY });
   const [my_links_res] = useQuery({ query: MY_LINKS_QUERY });
   const { data, fetching, error } = me_res;
-  const { data: links_data, fetching: fetching_links, error: links_error } = my_links_res;
+  const {
+    data: links_data,
+    fetching: fetching_links,
+    error: links_error,
+  } = my_links_res;
 
   console.log(data, links_data);
 
@@ -41,9 +45,15 @@ export default function SignUpPage() {
         <Divider />
         Created: {data.me.Created_At}
         <Divider />
-        {links_data.my_links.map((e, i) => {
-          return <p>{e.Base_URL} {e.Short_URL}</p>
-        })}
+        <Grid>
+          {links_data.my_links.map((e, i) => {
+            return (
+              <Box m="4">
+                Link: {e.Base_URL} Short: {e.Short_URL} Created: {e.Created_At} Expires: {e.Expires_At} <IconButton icon="edit" /> <IconButton icon="delete" />
+              </Box>
+            );
+          })}
+        </Grid>
       </Box>
     );
   }
