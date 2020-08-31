@@ -2,7 +2,7 @@ import React, { Component, useState } from "react";
 import { Box, Button, Input, Icon } from "@chakra-ui/core";
 import { createApolloFetch } from "apollo-fetch";
 import { CopyToClipboard } from 'react-copy-to-clipboard';
-var QRCode = require("qrcode.react");
+import QRCode from "qrcode.react";
 
 const domain = "azaini.me/";
 const fetch = createApolloFetch({ uri: "http://localhost:4000/graphql" });

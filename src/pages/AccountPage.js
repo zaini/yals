@@ -48,7 +48,7 @@ export default function SignUpPage() {
         <Grid>
           {links_data.my_links.map((e, i) => {
             return (
-              <Box m="4">
+              <Box m="1" p="4" border="2px" borderColor="grey" borderRadius="md">
                 Link: {e.Base_URL} Short: {e.Short_URL} Created: {e.Created_At} Expires: {e.Expires_At} <IconButton icon="edit" /> <IconButton icon="delete" />
               </Box>
             );

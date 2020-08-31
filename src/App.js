@@ -7,6 +7,7 @@ import ContactPage from "./pages/ContactPage";
 import LoginPage from "./pages/LoginPage";
 import SignUpPage from "./pages/SignUpPage";
 import AccountPage from "./pages/AccountPage";
+import LoggedHomePage from "./pages/LoggedHomePage";
 import {
   Box,
   Flex,
@@ -110,6 +111,7 @@ function App() {
           <Route path={"/login"} component={LoginPage} />
           <Route path={"/signup"} component={SignUpPage} />
           <Route path={"/account"} component={AccountPage} />
+          <Route path={"/home"} component={LoggedHomePage} />
           <Route exact path={"/:short_id"} component={RedirectPage} />
         </Switch>
       </Router>
