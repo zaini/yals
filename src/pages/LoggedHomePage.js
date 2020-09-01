@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React, { useState } from "react";
 import {
   Box,
   Button,
@@ -7,60 +7,55 @@ import {
   Icon,
   InputLeftAddon,
   InputGroup,
+  FormControl,
+  FormErrorMessage,
 } from "@chakra-ui/core";
 import { createApolloFetch } from "apollo-fetch";
 import { CopyToClipboard } from "react-copy-to-clipboard";
 import QRCode from "qrcode.react";
+import { useForm } from "react-hook-form";
 
 const domain = "azaini.me/";
 const fetch = createApolloFetch({ uri: "http://localhost:4000/graphql" });
 
-export default class LoggedHomePage extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      link: "",
-      short_link: undefined,
-      short_id: "",
-      expiry_date: undefined,
-      copied: false,
-    };
-  }
+const LoggedHomePage = () => {
+  const [short_link, setShort_Link] = useState(undefined);
+  const [copied, setCopied] = useState(false);
+  const { register, handleSubmit, errors, setError } = useForm();
 
-  shorten() {}
+  const onSubmit = async ({ link }) => {
+    console.log(`Form Data: ${link}`);
+    let response = "await shorten(link)";
+    console.log("Shorten response: " + response);
+    setShort_Link(response);
+  };
 
-  render() {
-    return (
-      <Box id="homepage" w="50%" margin="auto">
-        <Input
-          placeholder="Make your links shorter"
-          value={this.state.link}
-          onKeyDown={(e) => {
-            if (e.key === "Enter") {
-              this.shorten();
-            }
-          }}
-          onChange={(e) => {
-            this.setState({ link: e.target.value });
-          }}
-        ></Input>
-        <br />
+  return (
+    <Box id="homepage" w="50%" margin="auto">
+      <form onSubmit={handleSubmit(onSubmit)}>
+        <FormControl isInvalid={errors.link} mt={4}>
+          <Input
+            type="text"
+            placeholder="Make your links shorter"
+            name="link"
+            ref={register}
+          />
+          <FormErrorMessage>
+            {errors.link && errors.link.message}
+          </FormErrorMessage>
+        </FormControl>
 
-        <Input
-          placeholder="Custom Short ID"
-          value={this.state.short_id}
-          onKeyDown={(e) => {
-            if (e.key === "Enter") {
-              this.shorten();
-            }
-          }}
-          onChange={(e) => {
-            this.setState({ short_id: e.target.value });
-          }}
-        ></Input>
-        <br />
+        <InputGroup mt={4}>
+          <InputLeftAddon children={domain} />
+          <Input
+            type="text"
+            placeholder="Custom short ID"
+            name="short_id"
+            ref={register}
+          />
+        </InputGroup>
 
-        <InputGroup>
+        <InputGroup mt={4}>
           <InputLeftAddon children="Link Expiration" />
           <Select
             onChange={(e) => {
@@ -79,35 +74,30 @@ export default class LoggedHomePage extends Component {
           </Select>
         </InputGroup>
 
-        <br />
-
-        <Button id="submit-button" onClick={() => this.shorten()}>
+        <Button mt={4} mb={4} type="submit">
           Convert!
         </Button>
-        <br />
+      </form>
 
-        <Box id="result">
-          {this.state.short_link !== undefined
-            ? [
-                domain + this.state.short_link,
-                <CopyToClipboard
-                  id="copyButton"
-                  text={domain + this.state.short_link}
-                  onCopy={() => this.setState({ copied: true })}
-                >
-                  <button>
-                    {this.state.copied ? (
-                      <Icon name="check" />
-                    ) : (
-                      <Icon name="copy" />
-                    )}
-                  </button>
-                </CopyToClipboard>,
-                <QRCode value={domain + this.state.short_link} />,
-              ]
-            : null}
-        </Box>
+      <Box id="result">
+        {short_link !== undefined
+          ? [
+              domain + short_link,
+              <CopyToClipboard
+                id="copyButton"
+                text={domain + short_link}
+                onCopy={() => setCopied(true)}
+              >
+                <button>
+                  {copied ? <Icon name="check" /> : <Icon name="copy" />}
+                </button>
+              </CopyToClipboard>,
+              <QRCode value={domain + short_link} />,
+            ]
+          : null}
       </Box>
-    );
-  }
-}
+    </Box>
+  );
+};
+
+export default LoggedHomePage;

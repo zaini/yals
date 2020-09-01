@@ -61,7 +61,7 @@ const HomePage = () => {
   };
 
   return (
-    <Box id="homepage">
+    <Box id="homepage" w="50%" m="auto">
       <form onSubmit={handleSubmit(onSubmit)}>
         <FormControl isInvalid={errors.link} mt={4}>
           <Input
