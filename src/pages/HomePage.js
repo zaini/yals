@@ -68,7 +68,9 @@ const HomePage = () => {
             type="text"
             placeholder="Make your links shorter"
             name="link"
-            ref={register}
+            ref={register({
+              required: "You must enter a link for it to be shortened",
+            })}
           />
           <FormErrorMessage>
             {errors.link && errors.link.message}

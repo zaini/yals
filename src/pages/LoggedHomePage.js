@@ -10,24 +10,32 @@ import {
   FormControl,
   FormErrorMessage,
 } from "@chakra-ui/core";
-import { createApolloFetch } from "apollo-fetch";
 import { CopyToClipboard } from "react-copy-to-clipboard";
 import QRCode from "qrcode.react";
 import { useForm } from "react-hook-form";
+import { useQuery, useMutation } from "urql";
 
 const domain = "azaini.me/";
-const fetch = createApolloFetch({ uri: "http://localhost:4000/graphql" });
+
+const CHECK_LINK_QUERY = `query($Short_URL: String!) {
+  link_by_short_url(Short_URL: $Short_URL) {
+    id
+    Base_URL
+  }
+}`;
 
 const LoggedHomePage = () => {
   const [short_link, setShort_Link] = useState(undefined);
   const [copied, setCopied] = useState(false);
   const { register, handleSubmit, errors, setError } = useForm();
+  const [{ data: result, fetching, error }, reexecuteQuery] = useQuery(
+    CHECK_LINK_QUERY
+  );
 
-  const onSubmit = async ({ link }) => {
-    console.log(`Form Data: ${link}`);
-    let response = "await shorten(link)";
-    console.log("Shorten response: " + response);
-    setShort_Link(response);
+  const onSubmit = async (data) => {
+    console.log(`Form data:`);
+    console.log(data);
+    reexecuteQuery({ Short_URL: data.short_id });
   };
 
   return (
@@ -38,26 +46,35 @@ const LoggedHomePage = () => {
             type="text"
             placeholder="Make your links shorter"
             name="link"
-            ref={register}
+            ref={register({
+              required: "You must enter a link for it to be shortened",
+            })}
           />
           <FormErrorMessage>
             {errors.link && errors.link.message}
           </FormErrorMessage>
         </FormControl>
 
-        <InputGroup mt={4}>
-          <InputLeftAddon children={domain} />
-          <Input
-            type="text"
-            placeholder="Custom short ID"
-            name="short_id"
-            ref={register}
-          />
-        </InputGroup>
+        <FormControl isInvalid={errors.short_id} mt={4}>
+          <InputGroup>
+            <InputLeftAddon children={domain} />
+            <Input
+              type="text"
+              placeholder="Custom short ID"
+              name="short_id"
+              ref={register({ required: "You must enter an ID" })}
+            />
+          </InputGroup>
+          <FormErrorMessage>
+            {errors.short_id && errors.short_id.message}
+          </FormErrorMessage>
+        </FormControl>
 
         <InputGroup mt={4}>
           <InputLeftAddon children="Link Expiration" />
           <Select
+            name="expiry_time"
+            ref={register}
             onChange={(e) => {
               console.log(e.target.value);
             }}
