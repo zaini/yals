@@ -10,7 +10,8 @@ const resolvers = {
     links: () => Link.find(),
     link_by_short_url: (_, { Short_URL }) =>
       Link.findOne({ Short_URL: Short_URL }),
-    link_by_base_url: (_, { Base_URL }) => Link.find({ Base_URL: Base_URL }),
+    link_by_base_url: (_, { Base_URL }) =>
+      Link.find({ Base_URL: Base_URL, Created_By: null }),
     users: () => User.find(),
     me: async (_, __, { req }) => {
       // not logged in
@@ -34,7 +35,7 @@ const resolvers = {
     createLink: (_, { Created_By, Expires_At, Base_URL }) => {
       let expiry_date = Expires_At === undefined ? null : new Date(Expires_At);
       const link = new Link({
-        Created_By: Created_By,
+        Created_By: Created_By === undefined ? null : Created_By,
         Created_At: new Date(),
         Expires_At: expiry_date,
         Base_URL: Base_URL,
