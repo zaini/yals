@@ -19,11 +19,19 @@ export default class RedirectPage extends Component {
       query: `{
             link_by_short_url(Short_URL: "${this.state.short_link}"){
               Base_URL
+              Expires_At
             }
           }`,
     }).then((res) => {
       if (res.data.link_by_short_url) {
-        this.setState({ link: res.data.link_by_short_url.Base_URL });
+        let x_time = res.data.link_by_short_url.Expires_At;
+        let currentDate = new Date();
+        console.log(x_time, x_time > currentDate.getTime());
+        if (x_time === null || x_time > currentDate.getTime()) {
+          // If link does not expire or has not expired yet
+          console.log("found link, redirecting");
+          // this.setState({ link: res.data.link_by_short_url.Base_URL });
+        }
       } else {
         console.log("Did not find a link");
       }
