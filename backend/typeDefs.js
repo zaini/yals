@@ -33,7 +33,7 @@ const typeDefs = gql`
     my_links: [Link]!
   }
   type Mutation {
-    createLink(Created_By: String, Expires_At: String, Base_URL: String!, Short_ID: String): Link!
+    createLink(Created_By: String, Expires_At: Int, Base_URL: String!, Short_ID: String): Link!
     registerUser(Email: String!, UserName: String!, Password: String!): UserResponse!
     login(Email: String!, Password: String!): UserResponse!
     logout: Boolean!

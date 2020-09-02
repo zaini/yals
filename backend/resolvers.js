@@ -33,7 +33,12 @@ const resolvers = {
   Mutation: {
     // First argument is parent, which we don't need. Second parameter is the arguments, so we destructure for what we want.
     createLink: (_, { Created_By, Expires_At, Base_URL, Short_ID }) => {
-      let expiry_date = Expires_At === undefined ? null : new Date(Expires_At);
+      let expiry_date = null;
+      if (!(Expires_At === undefined || Expires_At === -1)) {
+        let current_date = new Date();
+        expiry_date = current_date.getTime() + Expires_At;
+      }
+
       let short_id = Short_ID === undefined ? nanoid(7) : Short_ID;
       const link = new Link({
         Created_By: Created_By === undefined ? null : Created_By,

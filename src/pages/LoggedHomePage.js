@@ -46,7 +46,7 @@ const LoggedHomePage = ({ user_id }) => {
             createLink(
               Short_ID: "${data.short_id}"
               Base_URL: "${data.link}"
-              Expires_At: "${data.expiry_time}"
+              Expires_At: ${data.expiry_time}
               Created_By: "${user_id}"
             ) {
               Base_URL
@@ -111,12 +111,12 @@ const LoggedHomePage = ({ user_id }) => {
             defaultValue={-1}
           >
             <option value={-1}>Never</option>
-            <option value={10 * 60 * 100}>10 minutes</option>
-            <option value={60 * 60 * 100}>1 hour</option>
-            <option value={24 * 60 * 60 * 100}>1 day</option>
-            <option value={7 * 24 * 60 * 60 * 100}>1 week</option>
-            <option value={30 * 24 * 60 * 60 * 100}>1 month</option>
-            <option value={365 * 24 * 60 * 60 * 100}>1 year</option>
+            <option value={10 * 60 * 1000}>10 minutes</option>
+            <option value={60 * 60 * 1000}>1 hour</option>
+            <option value={24 * 60 * 60 * 1000}>1 day</option>
+            <option value={7 * 24 * 60 * 60 * 1000}>1 week</option>
+            <option value={30 * 24 * 60 * 60 * 1000}>1 month</option>
+            <option value={365 * 24 * 60 * 60 * 1000}>1 year</option>
           </Select>
         </InputGroup>
 
