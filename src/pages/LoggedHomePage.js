@@ -13,40 +13,59 @@ import {
 import { CopyToClipboard } from "react-copy-to-clipboard";
 import QRCode from "qrcode.react";
 import { useForm } from "react-hook-form";
-import { useQuery, useMutation } from "urql";
+import { createApolloFetch } from "apollo-fetch";
 
 const domain = "azaini.me/";
+const fetch = createApolloFetch({ uri: "http://localhost:4000/graphql" });
 
-const CHECK_LINK_QUERY = `query($Short_URL: String!) {
-  link_by_short_url(Short_URL: $Short_URL) {
-    id
-    Base_URL
-  }
-}`;
-
-const LoggedHomePage = () => {
+const LoggedHomePage = ({ user_id }) => {
   const [short_link, setShort_Link] = useState(null);
   const [copied, setCopied] = useState(false);
-  const { register, handleSubmit, errors } = useForm();
-  const [{ data: result, fetching, error }, reexecuteQuery] = useQuery({
-    query: CHECK_LINK_QUERY,
-    variables: { Short_URL: short_link },
-    pause: !short_link,
-  });
-
-  if (result) {
-    if (result.link_by_short_url === null) {
-      console.log("Did not find link");
-    } else {
-      console.log("Found link" + result.link_by_short_url.Base_URL);
-    }
-  }
+  const { register, handleSubmit, errors, setError } = useForm();
 
   const onSubmit = async (data) => {
-    // console.log(`Form data:`);
-    // console.log(data);
-    setShort_Link(data.short_id);
-    reexecuteQuery();
+    fetch({
+      query: `{
+        link_by_short_url(Short_URL: "${data.short_id}") {
+          id
+          Base_URL
+        }
+      }`,
+    }).then((res) => {
+      if (res.data.link_by_short_url) {
+        console.log("Short ID already in use");
+        console.log(res.data.link_by_short_url);
+        setError("short_id", {
+          type: "manual",
+          message: "That short ID is already in use",
+        });
+      } else {
+        console.log("Short ID is not in use. Creating link.");
+        fetch({
+          query: `mutation{
+            createLink(
+              Short_ID: "${data.short_id}"
+              Base_URL: "${data.link}"
+              Expires_At: "${data.expiry_time}"
+              Created_By: "${user_id}"
+            ) {
+              Base_URL
+              Short_URL
+            }
+          }`,
+        }).then((res) => {
+          if (res.data.createLink) {
+            console.log(res.data.createLink);
+            setShort_Link(res.data.createLink.Short_URL);
+          } else {
+            setError("link", {
+              type: "manual",
+              message: "Could not create a link successfully.",
+            });
+          }
+        });
+      }
+    });
   };
 
   return (

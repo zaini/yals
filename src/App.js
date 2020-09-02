@@ -35,13 +35,14 @@ function App() {
   const [me_res, reexecuteQuery] = useQuery({ query: ME_QUERY });
   const [res, logout] = useMutation(LOGOUT_MUTATION);
   const { data, fetching, error } = me_res;
-
+  let user_id;
   const { colorMode, toggleColorMode } = useColorMode();
 
   let body = null;
 
   if (fetching) {
   } else if (data.me !== null) {
+    user_id = data.me.id;
     body = (
       <>
         <Link className="link" href={"/account"}>
@@ -111,7 +112,10 @@ function App() {
           <Route path={"/login"} component={LoginPage} />
           <Route path={"/signup"} component={SignUpPage} />
           <Route path={"/account"} component={AccountPage} />
-          <Route path={"/home"} component={LoggedHomePage} />
+          <Route
+            path={"/home"}
+            component={() => <LoggedHomePage user_id={user_id} />}
+          />
           <Route exact path={"/:short_id"} component={RedirectPage} />
         </Switch>
       </Router>
