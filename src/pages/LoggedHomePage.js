@@ -25,17 +25,28 @@ const CHECK_LINK_QUERY = `query($Short_URL: String!) {
 }`;
 
 const LoggedHomePage = () => {
-  const [short_link, setShort_Link] = useState(undefined);
+  const [short_link, setShort_Link] = useState(null);
   const [copied, setCopied] = useState(false);
-  const { register, handleSubmit, errors, setError } = useForm();
-  const [{ data: result, fetching, error }, reexecuteQuery] = useQuery(
-    CHECK_LINK_QUERY
-  );
+  const { register, handleSubmit, errors } = useForm();
+  const [{ data: result, fetching, error }, reexecuteQuery] = useQuery({
+    query: CHECK_LINK_QUERY,
+    variables: { Short_URL: short_link },
+    pause: !short_link,
+  });
+
+  if (result) {
+    if (result.link_by_short_url === null) {
+      console.log("Did not find link");
+    } else {
+      console.log("Found link" + result.link_by_short_url.Base_URL);
+    }
+  }
 
   const onSubmit = async (data) => {
-    console.log(`Form data:`);
-    console.log(data);
-    reexecuteQuery({ Short_URL: data.short_id });
+    // console.log(`Form data:`);
+    // console.log(data);
+    setShort_Link(data.short_id);
+    reexecuteQuery();
   };
 
   return (
@@ -78,10 +89,9 @@ const LoggedHomePage = () => {
             onChange={(e) => {
               console.log(e.target.value);
             }}
+            defaultValue={-1}
           >
-            <option value={-1} selected="selected">
-              Never
-            </option>
+            <option value={-1}>Never</option>
             <option value={10 * 60 * 100}>10 minutes</option>
             <option value={60 * 60 * 100}>1 hour</option>
             <option value={24 * 60 * 60 * 100}>1 day</option>
@@ -97,7 +107,7 @@ const LoggedHomePage = () => {
       </form>
 
       <Box id="result">
-        {short_link !== undefined
+        {short_link
           ? [
               domain + short_link,
               <CopyToClipboard
