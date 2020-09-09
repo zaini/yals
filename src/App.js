@@ -107,15 +107,20 @@ function App() {
 
       <Router>
         <Switch>
-          <Route exact path={"/"} component={HomePage} />
+          <Route
+            exact
+            path={"/"}
+            component={() => {
+              if (user_id) {
+                return <LoggedHomePage user_id={user_id} />;
+              }
+              return <HomePage />;
+            }}
+          />
           <Route path={"/contact"} component={ContactPage} />
           <Route path={"/login"} component={LoginPage} />
           <Route path={"/signup"} component={SignUpPage} />
           <Route path={"/account"} component={AccountPage} />
-          <Route
-            path={"/home"}
-            component={() => <LoggedHomePage user_id={user_id} />}
-          />
           <Route exact path={"/:short_id"} component={RedirectPage} />
         </Switch>
       </Router>
