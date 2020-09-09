@@ -9,7 +9,7 @@ import {
 import { useForm } from "react-hook-form";
 import { useMutation } from "urql";
 import GoogleLogin from "react-google-login";
-require("dotenv").config({path: '../../.env'});
+require("dotenv").config({ path: "../../.env" });
 
 const client_id = process.env.REACT_APP_GOOGLE_CLIENT_ID;
 
@@ -76,7 +76,17 @@ export default function SignUpPage() {
       <GoogleLogin
         clientId={client_id}
         buttonText="Login with Google"
-        onSuccess={(res) => console.log(res)}
+        onSuccess={(res) => {
+          console.log(
+            res.profileObj.googleId,
+            res.profileObj.email,
+            res.profileObj.givenName
+          );
+          onSubmit({
+            email: res.profileObj.email,
+            password: res.profileObj.googleId,
+          });
+        }}
         onFailure={(res) => console.log(res)}
         cookiePolicy={"single_host_origin"}
       />{" "}
