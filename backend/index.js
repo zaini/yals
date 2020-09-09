@@ -3,7 +3,7 @@ const express = require("express");
 const mongoose = require("mongoose");
 const resolvers = require("./resolvers");
 const typeDefs = require("./typeDefs");
-require("dotenv").config();
+require("dotenv").config({path: '../.env'});
 const redis = require("redis");
 const session = require("express-session");
 const cors = require("cors");
@@ -20,6 +20,7 @@ app.use(
   })
 );
 
+const session_secret = process.env.SESSION_SECRET;
 app.use(
   session({
     name: "qid",
@@ -29,7 +30,7 @@ app.use(
       httpOnly: true, // cannot be accessed by frontend
       sameSite: "lax", // IDK what this does, should research it
     },
-    secret: "myrandomstringwhichiwillputintoanenvvariablelaterlol",
+    secret: session_secret,
     resave: false,
     saveUninitialized: false,
   })

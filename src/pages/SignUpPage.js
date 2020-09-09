@@ -10,6 +10,9 @@ import {
 import { useForm } from "react-hook-form";
 import { useMutation } from "urql";
 import GoogleLogin from "react-google-login";
+require("dotenv").config({path: '../../.env'});
+
+const client_id = process.env.REACT_APP_GOOGLE_CLIENT_ID;
 
 const REGISTER_MUTATION = `mutation Register($email: String!, $username: String!, $password: String!){
   registerUser(Email: $email, UserName: $username, Password: $password){
@@ -87,7 +90,7 @@ export default function SignUpPage() {
         </Button>
       </form>
       <GoogleLogin
-        clientId="110139847957-18v65kpfcpt8k5pc8n8galikf65mm4v8.apps.googleusercontent.com"
+        clientId={client_id}
         buttonText="Login with Google"
         onSuccess={(res) => console.log(res)}
         onFailure={(res) => console.log(res)}
