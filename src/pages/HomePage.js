@@ -11,8 +11,9 @@ import { createApolloFetch } from "apollo-fetch";
 import { CopyToClipboard } from "react-copy-to-clipboard";
 import { useForm } from "react-hook-form";
 import QRCode from "qrcode.react";
+require("dotenv").config({ path: "../../.env" });
 
-const domain = "azaini.me/";
+const domain = process.env.REACT_APP_DOMAIN;
 const fetch = createApolloFetch({ uri: "http://localhost:4000/graphql" });
 
 const HomePage = () => {

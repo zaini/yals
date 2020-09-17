@@ -14,8 +14,9 @@ import { CopyToClipboard } from "react-copy-to-clipboard";
 import QRCode from "qrcode.react";
 import { useForm } from "react-hook-form";
 import { createApolloFetch } from "apollo-fetch";
+require("dotenv").config({ path: "../../.env" });
 
-const domain = "azaini.me/";
+const domain = process.env.REACT_APP_DOMAIN;
 const fetch = createApolloFetch({ uri: "http://localhost:4000/graphql" });
 
 const LoggedHomePage = ({ user_id }) => {
@@ -80,7 +81,7 @@ const LoggedHomePage = ({ user_id }) => {
         <FormControl isInvalid={errors.link} mt={4}>
           <Input
             type="text"
-            placeholder="Make your links shorter"
+            placeholder="Link to shorten..."
             name="link"
             ref={register({
               required: "You must enter a link for it to be shortened",
