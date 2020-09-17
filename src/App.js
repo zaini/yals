@@ -19,7 +19,9 @@ import {
   Icon,
 } from "@chakra-ui/core";
 import { useQuery, useMutation } from "urql";
+require("dotenv").config({ path: "../../.env" });
 
+const domain = process.env.REACT_APP_DOMAIN;
 const ME_QUERY = `query {
   me {
     id
@@ -84,7 +86,7 @@ function App() {
             src="https://freight.cargo.site/t/original/i/245e7cd460861c15daaba23637d2849a9ebb7e664f16553e814b3bea47681eb9/AA_logo_transparent-bg.png"
             size={70}
           />
-          <Text pl={3}>Link-Shortener</Text>
+          <Text pl={3}>{domain}</Text>
         </Flex>
 
         <Box className="navbar-links">
