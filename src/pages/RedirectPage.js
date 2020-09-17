@@ -17,7 +17,7 @@ export default class RedirectPage extends Component {
   redirect() {
     fetch({
       query: `{
-            link_by_short_url(Short_URL: "${this.state.short_link}"){
+            link_by_short_url(Short_URL: "${this.state.short_link}", Expires_At: ${new Date().getTime()}){
               Base_URL
               Expires_At
             }
@@ -29,6 +29,8 @@ export default class RedirectPage extends Component {
         if (x_time === null || x_time > currentDate.getTime()) {
           // If link does not expire or has not expired yet
           this.setState({ link: res.data.link_by_short_url.Base_URL });
+        } else {
+          console.log("Link has expired.")
         }
       } else {
         console.log("Did not find a link");

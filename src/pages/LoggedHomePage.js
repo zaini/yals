@@ -26,13 +26,19 @@ const LoggedHomePage = ({ user_id }) => {
   const onSubmit = async (data) => {
     fetch({
       query: `{
-        link_by_short_url(Short_URL: "${data.short_id}") {
+        link_by_short_url(Short_URL: "${data.short_id}", Expires_At: ${new Date().getTime()}) {
           id
           Base_URL
+          Expires_At
         }
       }`,
     }).then((res) => {
-      if (res.data.link_by_short_url) {
+      let currentDate = new Date();
+      if (
+        res.data.link_by_short_url &&
+        (res.data.link_by_short_url.Expires_At === null ||
+          res.data.link_by_short_url.Expires_At > currentDate.getTime())
+      ) {
         console.log("Short ID already in use");
         console.log(res.data.link_by_short_url);
         setError("short_id", {
@@ -40,7 +46,7 @@ const LoggedHomePage = ({ user_id }) => {
           message: "That short ID is already in use",
         });
       } else {
-        console.log("Short ID is not in use. Creating link.");
+        console.log("Short ID is not in use or expired. Creating link.");
         fetch({
           query: `mutation{
             createLink(

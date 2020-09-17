@@ -9,8 +9,18 @@ const Message = require("./models/Message");
 const resolvers = {
   Query: {
     links: () => Link.find(),
-    link_by_short_url: (_, { Short_URL }) =>
-      Link.findOne({ Short_URL: Short_URL }),
+    link_by_short_url: async (_, { Short_URL, Expires_At }) => {
+      if (Expires_At === undefined) {
+        return Link.findOne({ Short_URL: Short_URL });
+      }
+      return Link.findOne({
+        Short_URL: Short_URL,
+        $or: [
+          { Expires_At: { $gt: Expires_At } },
+          { Expires_At: { $eq: null } },
+        ],
+      });
+    },
     link_by_base_url: (_, { Base_URL }) =>
       Link.find({ Base_URL: Base_URL, Created_By: null }),
     users: () => User.find(),

@@ -11,11 +11,11 @@ const LinkSchema = new Schema({
     required: [false],
   },
   Created_At: {
-    type: Date,
+    type: Number,
     require: [true, "Link must have a creation date"],
   },
   Expires_At: {
-    type: Date,
+    type: Number,
     require: [false],
   },
   Base_URL: {
