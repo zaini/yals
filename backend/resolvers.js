@@ -3,6 +3,7 @@ const Link = require("./models/Link");
 const { nanoid } = require("nanoid");
 const argon2 = require("argon2");
 const User = require("./models/User");
+const Message = require("./models/Message");
 
 // Writing what each function actually returns. This should be from mongoDB
 const resolvers = {
@@ -143,6 +144,39 @@ const resolvers = {
           resolve(true);
         })
       );
+    },
+    createMessage: async (_, message_details) => {
+      console.log(message_details);
+      if (message_details.Name.length === 0) {
+        return {
+          errors: [{ field: "name", message: "that name is too short" }],
+        };
+      }
+
+      if (message_details.Email.length <= 5) {
+        return {
+          errors: [{ field: "email", message: "that email is too short" }],
+        };
+      }
+
+      if (message_details.Message.length === 0) {
+        return {
+          errors: [{ field: "message", message: "that message is too short" }],
+        };
+      }
+
+      let subject =
+        message_details.Subject === "" ? "No Subject" : message_details.Subject;
+
+      const message = new Message({
+        Sent_At: new Date(),
+        Name: message_details.Name,
+        Email: message_details.Email,
+        Subject: subject,
+        Message: message_details.Message,
+      });
+      message.save();
+      return { message: message };
     },
   },
 };

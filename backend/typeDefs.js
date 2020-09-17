@@ -16,9 +16,20 @@ const typeDefs = gql`
     Email: String!
     UserName: String!
   }
+  type Message {
+    id: ID!
+    Sent_At: String
+    Name: String!
+    Email: String!
+    Subject: String!
+  }
   type UserResponse {
     errors: [FieldError]
     user: User
+  }
+  type MessageResponse {
+    errors: [FieldError]
+    message: Message
   }
   type FieldError {
     field: String
@@ -33,10 +44,25 @@ const typeDefs = gql`
     my_links: [Link]!
   }
   type Mutation {
-    createLink(Created_By: String, Expires_At: Int, Base_URL: String!, Short_ID: String): Link!
-    registerUser(Email: String!, UserName: String!, Password: String!): UserResponse!
+    createLink(
+      Created_By: String
+      Expires_At: Int
+      Base_URL: String!
+      Short_ID: String
+    ): Link!
+    registerUser(
+      Email: String!
+      UserName: String!
+      Password: String!
+    ): UserResponse!
     login(Email: String!, Password: String!): UserResponse!
     logout: Boolean!
+    createMessage(
+      Name: String
+      Email: String
+      Subject: String
+      Message: String
+    ): MessageResponse!
   }
 `;
 
