@@ -3,14 +3,12 @@ import {
   Box,
   Button,
   Input,
-  Icon,
   FormControl,
   FormErrorMessage,
 } from "@chakra-ui/core";
 import { createApolloFetch } from "apollo-fetch";
-import { CopyToClipboard } from "react-copy-to-clipboard";
 import { useForm } from "react-hook-form";
-import QRCode from "qrcode.react";
+import QRAndCopy from "../components/QRAndCopy";
 require("dotenv").config({ path: "../../.env" });
 
 const domain = process.env.REACT_APP_DOMAIN;
@@ -18,7 +16,6 @@ const fetch = createApolloFetch({ uri: "http://localhost:4000/graphql" });
 
 const HomePage = () => {
   const [short_link, setShort_Link] = useState(undefined);
-  const [copied, setCopied] = useState(false);
   const { register, handleSubmit, errors, setError } = useForm();
 
   const onSubmit = async ({ link }) => {
@@ -83,23 +80,7 @@ const HomePage = () => {
         </Button>
       </form>
 
-      <Box id="result">
-        {short_link !== undefined
-          ? [
-              domain + short_link,
-              <CopyToClipboard
-                id="copyButton"
-                text={domain + short_link}
-                onCopy={() => setCopied(true)}
-              >
-                <button>
-                  {copied ? <Icon name="check" /> : <Icon name="copy" />}
-                </button>
-              </CopyToClipboard>,
-              <QRCode value={domain + short_link} />,
-            ]
-          : null}
-      </Box>
+      {short_link ? <QRAndCopy link={domain + "/" + short_link} /> : null}
     </Box>
   );
 };

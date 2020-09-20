@@ -4,16 +4,14 @@ import {
   Button,
   Input,
   Select,
-  Icon,
   InputLeftAddon,
   InputGroup,
   FormControl,
   FormErrorMessage,
 } from "@chakra-ui/core";
-import { CopyToClipboard } from "react-copy-to-clipboard";
-import QRCode from "qrcode.react";
 import { useForm } from "react-hook-form";
 import { createApolloFetch } from "apollo-fetch";
+import QRAndCopy from "../components/QRAndCopy";
 require("dotenv").config({ path: "../../.env" });
 
 const domain = process.env.REACT_APP_DOMAIN;
@@ -21,13 +19,14 @@ const fetch = createApolloFetch({ uri: "http://localhost:4000/graphql" });
 
 const LoggedHomePage = ({ user_id }) => {
   const [short_link, setShort_Link] = useState(null);
-  const [copied, setCopied] = useState(false);
   const { register, handleSubmit, errors, setError } = useForm();
 
   const onSubmit = async (data) => {
     fetch({
       query: `{
-        link_by_short_url(Short_URL: "${data.short_id}", Expires_At: ${new Date().getTime()}) {
+        link_by_short_url(Short_URL: "${
+          data.short_id
+        }", Expires_At: ${new Date().getTime()}) {
           id
           Base_URL
           Expires_At
@@ -132,23 +131,7 @@ const LoggedHomePage = ({ user_id }) => {
         </Button>
       </form>
 
-      <Box id="result">
-        {short_link
-          ? [
-              domain + short_link,
-              <CopyToClipboard
-                id="copyButton"
-                text={domain + short_link}
-                onCopy={() => setCopied(true)}
-              >
-                <button>
-                  {copied ? <Icon name="check" /> : <Icon name="copy" />}
-                </button>
-              </CopyToClipboard>,
-              <QRCode value={domain + short_link} />,
-            ]
-          : null}
-      </Box>
+      {short_link ? <QRAndCopy link={domain + "/" + short_link} /> : null}
     </Box>
   );
 };
