@@ -7,8 +7,8 @@ const QRAndCopy = ({ link }) => {
   const [copied, setCopied] = useState(false);
 
   return (
-    <Box id="result">
-      {link}
+    <Box>
+      {link}{" "}
       <CopyToClipboard
         id="copyButton"
         text={link}
@@ -16,8 +16,7 @@ const QRAndCopy = ({ link }) => {
       >
         <button>{copied ? <Icon name="check" /> : <Icon name="copy" />}</button>
       </CopyToClipboard>
-      ,
-      <QRCode value={link} />,
+      <QRCode value={link} />
     </Box>
   );
 };

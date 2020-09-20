@@ -1,13 +1,41 @@
-# LinkShortener [IN PROGRESS]
+# qasir - link shortener w/ custom URLs
 
-A LinkShortener with analytics
+A link shortener that allows you to set custom URLs, expiration dates and manage them from your account.
 
-Trello: https://trello.com/b/CNWKN2k5/linkshortener
+# Features
 
-Frontend: React, Chakra UI
+* shorten any link
 
-Backend: Node.js/Express, Apollo GraphQL, Mongoose
+* create an account to manage your links
 
-Data: MongoDB, Redis
+* set expiry dates for your links
 
-Forms: Formik
+* delete your links whenever you want
+
+* easily share your links with a QR code
+
+# Soon
+
+* more functionality to accounts including account settings
+
+* analytics for your links, such as # of clicks, times, location etc. to better understand who's using your links
+
+# Setup
+
+You'll need a ```.env``` with the following variables ```MONGODB_URI```, ```SESSION_SECRET``` (any string for redis to use), ```REACT_APP_DOMAIN``` (the doamin for your link shortener e.g. ```qasir.com```), ```REACT_APP_GOOGLE_CLIENT_ID``` (Google API key for Google authentication)
+
+# Other
+
+I planned and kept track of the project using [Trello.](https://trello.com/b/CNWKN2k5/linkshortener)
+
+## Here's the stack I used:
+
+* Frontend: React, Chakra UI
+
+* Backend: Node.js/Express, Apollo GraphQL (first time using it, I much prefer it to a RESTful API), Mongoose
+
+* Data: MongoDB, Redis (not sure if i'm using it right, but it's working for storing sessions)
+
+* Forms: react-hook-form (prefer this over formik)
+
+* Hosting: Vercel (could have used heroku or something else)
