@@ -1,6 +1,6 @@
 import React from "react";
 import { Box, Heading, Divider, Grid, IconButton } from "@chakra-ui/core";
-import { useQuery } from "urql";
+import { useQuery, useMutation } from "urql";
 
 const ME_QUERY = `query {
   me {
@@ -12,10 +12,17 @@ const ME_QUERY = `query {
 
 const MY_LINKS_QUERY = `query {
   my_links {
+    id
     Base_URL
     Short_URL
     Created_At
     Expires_At
+  }
+}`;
+
+const DELETE_LINK_MUTATION = `mutation DeleteLink($id: String!) {
+  deleteLink(ID: $id) {
+    id
   }
 }`;
 
@@ -29,7 +36,13 @@ export default function SignUpPage() {
     error: links_error,
   } = my_links_res;
 
-  console.log(data, links_data);
+  const [res, deleteLinkMutation] = useMutation(DELETE_LINK_MUTATION);
+
+  const deleteLink = async (id) => {
+    console.log("deleting " + id);
+    let res = await deleteLinkMutation({ id: id });
+    console.log(res);
+  };
 
   if (fetching || fetching_links) {
     return <p>fetching</p>;
@@ -48,8 +61,17 @@ export default function SignUpPage() {
         <Grid>
           {links_data.my_links.map((e, i) => {
             return (
-              <Box m="1" p="4" border="2px" borderColor="grey" borderRadius="md">
-                Link: {e.Base_URL} Short: {e.Short_URL} Created: {e.Created_At} Expires: {e.Expires_At} <IconButton icon="edit" /> <IconButton icon="delete" />
+              <Box
+                m="1"
+                p="4"
+                border="2px"
+                borderColor="grey"
+                borderRadius="md"
+              >
+                id: {e.id} Link: {e.Base_URL} Short: {e.Short_URL} Created:{" "}
+                {e.Created_At} Expires: {e.Expires_At}{" "}
+                <IconButton icon="edit" />{" "}
+                <IconButton icon="delete" onClick={() => deleteLink(e.id)} />
               </Box>
             );
           })}
