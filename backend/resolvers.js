@@ -61,6 +61,9 @@ const resolvers = {
       link.save();
       return link;
     },
+    deleteLink: (_, { ID }) => {
+      return Link.findOneAndDelete(ID);
+    },
     registerUser: async (_, user_details, { req }) => {
       if (user_details.Email.length <= 6) {
         return {
