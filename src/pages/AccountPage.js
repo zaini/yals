@@ -12,6 +12,7 @@ import {
 import { useQuery, useMutation } from "urql";
 import Popup from "reactjs-popup";
 import { useForm } from "react-hook-form";
+import QRAndCopy from "../components/QRAndCopy";
 
 const domain = process.env.REACT_APP_DOMAIN;
 
@@ -92,80 +93,102 @@ export default function SignUpPage() {
         <Divider />
         Created: {data.me.Created_At}
         <Divider />
-        <Grid>
+        <Grid templateColumns="repeat(4, 1fr)">
           {links_data.my_links.map((e, i) => {
             return (
               <Box
                 m="1"
                 p="4"
                 border="2px"
+                textAlign="center"
                 borderColor="grey"
                 borderRadius="md"
               >
-                id: {e.id} Link: {e.Base_URL} Short: {e.Short_URL} Created:{" "}
-                {e.Created_At} Expires: {e.Expires_At}{" "}
-                <Popup trigger={<IconButton icon="edit" />} modal nested>
-                  <form onSubmit={handleSubmit(onSubmit)}>
-                    <FormControl isReadOnly={true} mt={4}>
-                      <InputLeftAddon children="ID" />
-                      <Input
-                        ref={register}
-                        type="text"
-                        name="id"
-                        defaultValue={e.id}
-                      />
-                    </FormControl>
+                <Box>Destination: {e.Base_URL}</Box>
+                <Box>
+                  {e.Created_At} -{" "}
+                  {e.Expires_At === null ? "Never" : e.Expires_At}
+                </Box>
 
-                    <FormControl isReadOnly={true} mt={4}>
-                      <InputLeftAddon children="Destination" />
-                      <Input
-                        ref={register}
-                        type="text"
-                        name="link"
-                        defaultValue={e.Base_URL}
-                      />
-                    </FormControl>
+                <Box>
+                  <QRAndCopy link={domain + e.Short_URL}></QRAndCopy>
+                </Box>
 
-                    <FormControl isReadOnly={true} mt={4}>
-                      <InputLeftAddon children="Short Link" />
-                      <Input
-                        ref={register}
-                        type="text"
-                        name="shortlink"
-                        defaultValue={domain + e.Short_URL}
-                      />
-                    </FormControl>
+                <Box>
+                  <Popup
+                    trigger={<IconButton m={2} icon="edit" />}
+                    modal
+                    nested
+                  >
+                    <form onSubmit={handleSubmit(onSubmit)}>
+                      <FormControl isReadOnly={true} mt={4}>
+                        <InputLeftAddon children="ID" />
+                        <Input
+                          ref={register}
+                          type="text"
+                          name="id"
+                          defaultValue={e.id}
+                        />
+                      </FormControl>
 
-                    <InputGroup mt={4}>
-                      <InputLeftAddon children="Link Expiration" />
-                      <Select
-                        name="expiry_time"
-                        ref={register}
-                        onChange={(e) => {
-                          console.log(e.target.value);
-                        }}
-                        defaultValue={-1}
-                      >
-                        <option value={-1}>Never</option>
-                        <option value={10 * 60 * 1000}>10 minutes</option>
-                        <option value={60 * 60 * 1000}>1 hour</option>
-                        <option value={24 * 60 * 60 * 1000}>1 day</option>
-                        <option value={7 * 24 * 60 * 60 * 1000}>1 week</option>
-                        <option value={30 * 24 * 60 * 60 * 1000}>
-                          1 month
-                        </option>
-                        <option value={365 * 24 * 60 * 60 * 1000}>
-                          1 year
-                        </option>
-                      </Select>
-                    </InputGroup>
+                      <FormControl isReadOnly={true} mt={4}>
+                        <InputLeftAddon children="Destination" />
+                        <Input
+                          ref={register}
+                          type="text"
+                          name="link"
+                          defaultValue={e.Base_URL}
+                        />
+                      </FormControl>
 
-                    <Button mt={4} mb={4} type="submit">
-                      Confirm Edit
-                    </Button>
-                  </form>
-                </Popup>
-                <IconButton icon="delete" onClick={() => deleteLink(e.id)} />
+                      <FormControl isReadOnly={true} mt={4}>
+                        <InputLeftAddon children="Short Link" />
+                        <Input
+                          ref={register}
+                          type="text"
+                          name="shortlink"
+                          defaultValue={domain + e.Short_URL}
+                        />
+                      </FormControl>
+
+                      <InputGroup mt={4}>
+                        <InputLeftAddon children="Link Expiration" />
+                        <Select
+                          name="expiry_time"
+                          ref={register}
+                          onChange={(e) => {
+                            console.log(e.target.value);
+                          }}
+                          defaultValue={-1}
+                        >
+                          <option value={-1}>Never</option>
+                          <option value={10 * 60 * 1000}>10 minutes</option>
+                          <option value={60 * 60 * 1000}>1 hour</option>
+                          <option value={24 * 60 * 60 * 1000}>1 day</option>
+                          <option value={7 * 24 * 60 * 60 * 1000}>
+                            1 week
+                          </option>
+                          <option value={30 * 24 * 60 * 60 * 1000}>
+                            1 month
+                          </option>
+                          <option value={365 * 24 * 60 * 60 * 1000}>
+                            1 year
+                          </option>
+                        </Select>
+                      </InputGroup>
+
+                      <Button mt={4} mb={4} type="submit">
+                        Confirm Edit
+                      </Button>
+                    </form>
+                  </Popup>
+                  <IconButton
+                    m={2}
+                    icon="delete"
+                    onClick={() => deleteLink(e.id)}
+                  />
+                </Box>
+                <Box fontSize={10}>Link ID: {e.id}</Box>
               </Box>
             );
           })}
