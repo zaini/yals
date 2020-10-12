@@ -52,7 +52,7 @@ const typeDefs = gql`
     ): Link!
     editLink(
       ID: String!
-      New_Expiry: Int
+      New_Expiry: String!
     ): Link!
     deleteLink(ID: String): Link
     registerUser(

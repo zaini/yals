@@ -62,6 +62,7 @@ const resolvers = {
       return link;
     },
     editLink: (_, { ID, New_Expiry }) => {
+      New_Expiry = parseInt(New_Expiry);
       let expiry_date = null;
       if (!(New_Expiry === undefined || New_Expiry === -1)) {
         let current_date = new Date();
