@@ -61,6 +61,18 @@ const resolvers = {
       link.save();
       return link;
     },
+    editLink: (_, { ID, New_Expiry }) => {
+      let expiry_date = null;
+      if (!(New_Expiry === undefined || New_Expiry === -1)) {
+        let current_date = new Date();
+        expiry_date = current_date.getTime() + New_Expiry;
+      }
+      return Link.findOneAndUpdate(
+        { _id: ID },
+        { $set: { Expires_At: expiry_date } },
+        { new: true }
+      );
+    },
     deleteLink: (_, { ID }) => {
       return Link.findOneAndDelete({ _id: ID });
     },
