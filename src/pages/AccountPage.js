@@ -49,9 +49,7 @@ export default function SignUpPage() {
   const [delete_res, deleteLinkMutation] = useMutation(DELETE_LINK_MUTATION);
 
   const deleteLink = async (id) => {
-    console.log("deleting " + id);
     let res = await deleteLinkMutation({ id: id });
-    console.log(res);
     window.location.reload(false);
   };
 
@@ -60,12 +58,10 @@ export default function SignUpPage() {
   const [edit_res, editLinkMutation] = useMutation(EDIT_LINK_MUTATION);
 
   const onSubmit = async (data) => {
-    console.log(data);
     let res = await editLinkMutation({
       id: data.id,
       new_expiry: data.expiry_time,
     });
-    console.log(res);
   };
 
   if (fetching || fetching_links) {

@@ -20,9 +20,7 @@ const UnloggedHomePage = () => {
   const { register, handleSubmit, errors, setError } = useForm();
 
   const onSubmit = async ({ link }) => {
-    console.log(`Form Data: ${link}`);
     let response = await shorten(link);
-    console.log("Shorten response: " + response);
     setShort_Link(response);
   };
 
@@ -41,12 +39,9 @@ const UnloggedHomePage = () => {
       }
     }`,
     }).then((res) => {
-      // console.log(res.data.link_by_base_url);
       if (res.data.link_by_base_url[0]) {
-        // console.log("Found existing link");
         return res.data.link_by_base_url[0].Short_URL;
       } else {
-        // console.log("Did not find an existing link. Creating new one.");
         return fetch({
           query: `mutation{
             createLink(Base_URL: "${link}"){

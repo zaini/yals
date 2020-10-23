@@ -31,14 +31,11 @@ export default function ContactPage() {
   const { register, handleSubmit, errors, setError, reset } = useForm();
   const onSubmit = async (data) => {
     const response = await sendMessage(data);
-    console.log(response);
     if (response.data?.createMessage.errors !== null) {
       response.data.createMessage.errors.forEach(({ field, message }) => {
-        console.log(field, message);
         setError(field, { type: "manual", message });
       });
     } else {
-      console.log("Success");
       reset();
       setIsSuccessfullySent(true);
     }

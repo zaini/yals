@@ -48,14 +48,11 @@ const LoggedHomePage = ({ user_id }) => {
         (res.data.link_by_short_url.Expires_At === null ||
           res.data.link_by_short_url.Expires_At > currentDate.getTime())
       ) {
-        console.log("Short ID already in use");
-        console.log(res.data.link_by_short_url);
         setError("short_id", {
           type: "manual",
           message: "That short ID is already in use",
         });
       } else {
-        console.log("Short ID is not in use or expired. Creating link.");
         fetch({
           query: `mutation{
             createLink(
@@ -69,9 +66,7 @@ const LoggedHomePage = ({ user_id }) => {
             }
           }`,
         }).then((res) => {
-          console.log(res.data);
           if (res.data.createLink) {
-            console.log(res.data.createLink);
             setShort_Link(res.data.createLink.Short_URL);
           } else {
             setError("link", {
@@ -121,9 +116,6 @@ const LoggedHomePage = ({ user_id }) => {
           <Select
             name="expiry_time"
             ref={register}
-            onChange={(e) => {
-              console.log(e.target.value);
-            }}
             defaultValue={-1}
           >
             <option value={-1}>Never</option>

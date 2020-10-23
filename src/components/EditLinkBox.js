@@ -65,9 +65,6 @@ export default function EditLinkBox({
           <Select
             name="expiry_time"
             ref={register}
-            onChange={(e) => {
-              console.log(e.target.value);
-            }}
             defaultValue={-1}
           >
             <option value={-1}>Never</option>

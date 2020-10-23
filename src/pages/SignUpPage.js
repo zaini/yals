@@ -33,16 +33,12 @@ export default function SignUpPage() {
 
   const { register, handleSubmit, errors, setError } = useForm();
   const onSubmit = async (data) => {
-    console.log(data);
     const response = await registerUser(data);
-    console.log(response);
     if (response.data?.registerUser.errors !== null) {
       response.data.registerUser.errors.forEach(({ field, message }) => {
-        console.log(field, message);
         setError(field, { type: "manual", message });
       });
     } else {
-      console.log("Success");
       window.location.replace("/account");
     }
   };
@@ -93,11 +89,6 @@ export default function SignUpPage() {
         clientId={client_id}
         buttonText="Sign up with Google"
         onSuccess={(res) => {
-          console.log(
-            res.profileObj.googleId,
-            res.profileObj.email,
-            res.profileObj.givenName
-          );
           onSubmit({
             email: res.profileObj.email,
             username: res.profileObj.givenName + "-GAccount",
