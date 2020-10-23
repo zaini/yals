@@ -56,7 +56,7 @@ export default function EditLinkBox({
             ref={register}
             type="text"
             name="shortlink"
-            defaultValue={domain + e.Short_URL}
+            defaultValue={domain + "/" + e.Short_URL}
           />
         </FormControl>
 
