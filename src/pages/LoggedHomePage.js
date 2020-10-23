@@ -5,6 +5,7 @@ import {
   Input,
   Select,
   InputLeftAddon,
+  Heading,
   InputGroup,
   FormControl,
   FormErrorMessage,
@@ -75,7 +76,7 @@ const LoggedHomePage = ({ user_id }) => {
   };
 
   return (
-    <Box id="homepage" w="50%" margin="auto">
+    <Box>
       <form onSubmit={handleSubmit(onSubmit)}>
         <FormControl isInvalid={errors.link} mt={4}>
           <Input

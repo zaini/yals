@@ -2,6 +2,7 @@ import "./App.css";
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 import React, { useState, useEffect } from "react";
 import HomePage from "./pages/HomePage.js";
+import UnloggedHomePage from "./pages/UnloggedHomePage.js";
 import RedirectPage from "./pages/RedirectPage.js";
 import ContactPage from "./pages/ContactPage";
 import LoginPage from "./pages/LoginPage";
@@ -112,12 +113,7 @@ function App() {
           <Route
             exact
             path={"/"}
-            component={() => {
-              if (user_id) {
-                return <LoggedHomePage user_id={user_id} />;
-              }
-              return <HomePage />;
-            }}
+            component={() => <HomePage user_id={user_id} />}
           />
           <Route path={"/contact"} component={ContactPage} />
           <Route path={"/login"} component={LoginPage} />
