@@ -47,6 +47,13 @@ const EDIT_LINK_MUTATION = `mutation EditLink($id: String!, $new_expiry: String!
 }
 `;
 
+let contentStyle = {
+  background: "white",
+  padding: "20px 50px 15px",
+  border: "3px solid #1A202C",
+  borderRadius: "5px",
+};
+
 export default function SignUpPage() {
   const [me_res] = useQuery({ query: ME_QUERY });
   const [my_links_res] = useQuery({ query: MY_LINKS_QUERY });
@@ -63,6 +70,7 @@ export default function SignUpPage() {
     console.log("deleting " + id);
     let res = await deleteLinkMutation({ id: id });
     console.log(res);
+    window.location.reload(false);
   };
 
   const { register, handleSubmit, errors, setError } = useForm();
@@ -127,6 +135,9 @@ export default function SignUpPage() {
                     trigger={<IconButton m={2} icon="edit" />}
                     modal
                     nested
+                    {...{
+                      contentStyle,
+                    }}
                   >
                     <form onSubmit={handleSubmit(onSubmit)}>
                       <FormControl isReadOnly={true} mt={4}>
