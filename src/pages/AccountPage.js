@@ -1,19 +1,8 @@
 import React from "react";
-import { Box, Heading, Divider, Grid, IconButton } from "@chakra-ui/core";
-import {
-  Button,
-  Input,
-  Select,
-  InputLeftAddon,
-  InputGroup,
-  FormControl,
-} from "@chakra-ui/core";
+import { Box, Heading, Divider, Grid } from "@chakra-ui/core";
 import { useQuery, useMutation } from "urql";
-import Popup from "reactjs-popup";
 import { useForm } from "react-hook-form";
-import QRAndCopy from "../components/QRAndCopy";
-
-const domain = process.env.REACT_APP_DOMAIN;
+import LinkBox from "../components/LinkBox";
 
 const ME_QUERY = `query {
   me {
@@ -46,13 +35,6 @@ const EDIT_LINK_MUTATION = `mutation EditLink($id: String!, $new_expiry: String!
   }
 }
 `;
-
-let contentStyle = {
-  background: "white",
-  padding: "20px 50px 15px",
-  border: "3px solid #1A202C",
-  borderRadius: "5px",
-};
 
 export default function SignUpPage() {
   const [me_res] = useQuery({ query: ME_QUERY });
@@ -105,112 +87,13 @@ export default function SignUpPage() {
         <Grid templateColumns="repeat(4, 1fr)">
           {links_data.my_links.map((e, i) => {
             return (
-              <Box
-                m="1"
-                p="4"
-                border="2px"
-                borderColor="grey"
-                borderRadius="md"
-              >
-                <Box>
-                  <b>Destination:</b> {e.Base_URL}
-                </Box>
-                <Box>
-                  <b>Created:</b>{" "}
-                  {new Date(parseInt(e.Created_At)).toUTCString()}
-                </Box>
-                <Box>
-                  <b>Expires:</b>{" "}
-                  {e.Expires_At === null
-                    ? "Never"
-                    : new Date(parseInt(e.Expires_At)).toUTCString()}
-                </Box>
-                <Divider />
-                <Box>
-                  <QRAndCopy link={domain + "/" + e.Short_URL}></QRAndCopy>
-                </Box>
-
-                <Box textAlign="center">
-                  <Popup
-                    trigger={<IconButton m={2} icon="edit" />}
-                    modal
-                    nested
-                    {...{
-                      contentStyle,
-                    }}
-                  >
-                    <form onSubmit={handleSubmit(onSubmit)}>
-                      <FormControl isReadOnly={true} mt={4}>
-                        <InputLeftAddon children="ID" />
-                        <Input
-                          ref={register}
-                          type="text"
-                          name="id"
-                          defaultValue={e.id}
-                        />
-                      </FormControl>
-
-                      <FormControl isReadOnly={true} mt={4}>
-                        <InputLeftAddon children="Destination" />
-                        <Input
-                          ref={register}
-                          type="text"
-                          name="link"
-                          defaultValue={e.Base_URL}
-                        />
-                      </FormControl>
-
-                      <FormControl isReadOnly={true} mt={4}>
-                        <InputLeftAddon children="Short Link" />
-                        <Input
-                          ref={register}
-                          type="text"
-                          name="shortlink"
-                          defaultValue={domain + e.Short_URL}
-                        />
-                      </FormControl>
-
-                      <InputGroup mt={4}>
-                        <InputLeftAddon children="Link Expiration" />
-                        <Select
-                          name="expiry_time"
-                          ref={register}
-                          onChange={(e) => {
-                            console.log(e.target.value);
-                          }}
-                          defaultValue={-1}
-                        >
-                          <option value={-1}>Never</option>
-                          <option value={10 * 60 * 1000}>10 minutes</option>
-                          <option value={60 * 60 * 1000}>1 hour</option>
-                          <option value={24 * 60 * 60 * 1000}>1 day</option>
-                          <option value={7 * 24 * 60 * 60 * 1000}>
-                            1 week
-                          </option>
-                          <option value={30 * 24 * 60 * 60 * 1000}>
-                            1 month
-                          </option>
-                          <option value={365 * 24 * 60 * 60 * 1000}>
-                            1 year
-                          </option>
-                        </Select>
-                      </InputGroup>
-
-                      <Button mt={4} mb={4} type="submit">
-                        Confirm Edit
-                      </Button>
-                    </form>
-                  </Popup>
-                  <IconButton
-                    m={2}
-                    icon="delete"
-                    onClick={() => deleteLink(e.id)}
-                  />
-                </Box>
-                <Box fontSize={10} textAlign="center">
-                  Link ID: {e.id}
-                </Box>
-              </Box>
+              <LinkBox
+                link={e}
+                handleSubmit={handleSubmit}
+                onSubmit={onSubmit}
+                deleteLink={deleteLink}
+                register={register}
+              />
             );
           })}
         </Grid>
