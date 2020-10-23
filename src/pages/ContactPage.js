@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import {
   Box,
   Button,
@@ -27,8 +27,8 @@ const MESSAGE_MUTATION = `mutation SendContactMessage($name: String!, $email: St
 
 export default function ContactPage() {
   const [res, sendMessage] = useMutation(MESSAGE_MUTATION);
-
-  const { register, handleSubmit, errors, setError } = useForm();
+  const [isSuccessfullySent, setIsSuccessfullySent] = useState(false);
+  const { register, handleSubmit, errors, setError, reset } = useForm();
   const onSubmit = async (data) => {
     const response = await sendMessage(data);
     console.log(response);
@@ -39,6 +39,8 @@ export default function ContactPage() {
       });
     } else {
       console.log("Success");
+      reset();
+      setIsSuccessfullySent(true);
     }
   };
 
@@ -82,6 +84,8 @@ export default function ContactPage() {
         <Button mt={4} mb={4} type="submit">
           Send
         </Button>
+        <br />
+        {isSuccessfullySent ? "Message successfully send!" : null}
       </form>
     </Box>
   );
