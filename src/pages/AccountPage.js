@@ -79,9 +79,11 @@ export default function SignUpPage() {
   };
 
   if (fetching || fetching_links) {
-    return <p>fetching</p>;
+    return <Heading textAlign="center">Loading your account...</Heading>;
   } else if (error || links_error) {
-    return <p>error fetching account</p>;
+    return (
+      <Heading textAlign="center">Error loading your account... bruh</Heading>
+    );
   } else {
     return (
       <Box mt={8} mx="auto" maxW="1200px">

@@ -81,11 +81,9 @@ function App() {
         alignItems="center"
       >
         <Flex flexDirection="row" justifyContent="center" alignItems="center">
-          <Image
-            src="https://freight.cargo.site/t/original/i/245e7cd460861c15daaba23637d2849a9ebb7e664f16553e814b3bea47681eb9/AA_logo_transparent-bg.png"
-            size={70}
-          />
-          <Text pl={3}>{domain}</Text>
+          <Text p={3} pl={5} fontSize="30px">
+            <b>{domain}</b>
+          </Text>
         </Flex>
 
         <Box className="navbar-links">
