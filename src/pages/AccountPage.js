@@ -88,11 +88,11 @@ export default function SignUpPage() {
     return (
       <Box mt={8} mx="auto" maxW="1200px">
         <Heading>Account</Heading>
-        ID: {data.me.id}
+        <b>ID:</b> {data.me.id}
         <Divider />
-        Username: {data.me.UserName}
+        <b>Username:</b> {data.me.UserName}
         <Divider />
-        Created: {new Date(parseInt(data.me.Created_At)).toUTCString()}
+        <b>Created:</b> {new Date(parseInt(data.me.Created_At)).toUTCString()}
         <Divider />
         <Grid templateColumns="repeat(4, 1fr)">
           {links_data.my_links.map((e, i) => {
@@ -101,23 +101,28 @@ export default function SignUpPage() {
                 m="1"
                 p="4"
                 border="2px"
-                textAlign="center"
                 borderColor="grey"
                 borderRadius="md"
               >
-                <Box>Destination: {e.Base_URL}</Box>
                 <Box>
-                  {new Date(parseInt(e.Created_At)).toUTCString()} -{" "}
+                  <b>Destination:</b> {e.Base_URL}
+                </Box>
+                <Box>
+                  <b>Created:</b>{" "}
+                  {new Date(parseInt(e.Created_At)).toUTCString()}
+                </Box>
+                <Box>
+                  <b>Expires:</b>{" "}
                   {e.Expires_At === null
                     ? "Never"
                     : new Date(parseInt(e.Expires_At)).toUTCString()}
                 </Box>
-
+                <Divider />
                 <Box>
-                  <QRAndCopy link={domain + e.Short_URL}></QRAndCopy>
+                  <QRAndCopy link={domain + "/" + e.Short_URL}></QRAndCopy>
                 </Box>
 
-                <Box>
+                <Box textAlign="center">
                   <Popup
                     trigger={<IconButton m={2} icon="edit" />}
                     modal
@@ -191,7 +196,9 @@ export default function SignUpPage() {
                     onClick={() => deleteLink(e.id)}
                   />
                 </Box>
-                <Box fontSize={10}>Link ID: {e.id}</Box>
+                <Box fontSize={10} textAlign="center">
+                  Link ID: {e.id}
+                </Box>
               </Box>
             );
           })}
