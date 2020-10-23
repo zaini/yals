@@ -3,7 +3,7 @@ const express = require("express");
 const mongoose = require("mongoose");
 const resolvers = require("./resolvers");
 const typeDefs = require("./typeDefs");
-require("dotenv").config({path: '../.env'});
+require("dotenv").config({ path: "../.env" });
 const redis = require("redis");
 const session = require("express-session");
 const cors = require("cors");

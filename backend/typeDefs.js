@@ -50,10 +50,7 @@ const typeDefs = gql`
       Base_URL: String!
       Short_ID: String
     ): Link!
-    editLink(
-      ID: String!
-      New_Expiry: String!
-    ): Link!
+    editLink(ID: String!, New_Expiry: String!): Link!
     deleteLink(ID: String): Link
     registerUser(
       Email: String!
