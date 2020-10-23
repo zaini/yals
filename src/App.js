@@ -1,14 +1,12 @@
 import "./App.css";
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
-import React, { useState, useEffect } from "react";
+import React from "react";
 import HomePage from "./pages/HomePage.js";
-import UnloggedHomePage from "./pages/UnloggedHomePage.js";
 import RedirectPage from "./pages/RedirectPage.js";
 import ContactPage from "./pages/ContactPage";
 import LoginPage from "./pages/LoginPage";
 import SignUpPage from "./pages/SignUpPage";
 import AccountPage from "./pages/AccountPage";
-import LoggedHomePage from "./pages/LoggedHomePage";
 import {
   Box,
   Flex,

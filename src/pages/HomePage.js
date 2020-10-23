@@ -1,12 +1,5 @@
-import React, { useState } from "react";
-import {
-  Box,
-  Button,
-  Input,
-  FormControl,
-  FormErrorMessage,
-  Heading,
-} from "@chakra-ui/core";
+import React from "react";
+import { Box, Heading } from "@chakra-ui/core";
 import UnloggedHomePage from "./UnloggedHomePage";
 import LoggedHomePage from "./LoggedHomePage";
 require("dotenv").config({ path: "../../.env" });

@@ -7,7 +7,6 @@ import {
   InputLeftAddon,
   InputGroup,
   FormControl,
-  FormErrorMessage,
 } from "@chakra-ui/core";
 import { useQuery, useMutation } from "urql";
 import Popup from "reactjs-popup";
@@ -91,7 +90,7 @@ export default function SignUpPage() {
         <Divider />
         Username: {data.me.UserName}
         <Divider />
-        Created: {data.me.Created_At}
+        Created: {new Date(parseInt(data.me.Created_At)).toUTCString()}
         <Divider />
         <Grid templateColumns="repeat(4, 1fr)">
           {links_data.my_links.map((e, i) => {
@@ -106,8 +105,10 @@ export default function SignUpPage() {
               >
                 <Box>Destination: {e.Base_URL}</Box>
                 <Box>
-                  {e.Created_At} -{" "}
-                  {e.Expires_At === null ? "Never" : e.Expires_At}
+                  {new Date(parseInt(e.Created_At)).toUTCString()} -{" "}
+                  {e.Expires_At === null
+                    ? "Never"
+                    : new Date(parseInt(e.Expires_At)).toUTCString()}
                 </Box>
 
                 <Box>

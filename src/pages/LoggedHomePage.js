@@ -5,7 +5,6 @@ import {
   Input,
   Select,
   InputLeftAddon,
-  Heading,
   InputGroup,
   FormControl,
   FormErrorMessage,

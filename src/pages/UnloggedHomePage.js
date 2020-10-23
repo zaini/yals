@@ -5,7 +5,6 @@ import {
   Input,
   FormControl,
   FormErrorMessage,
-  Heading,
 } from "@chakra-ui/core";
 import { createApolloFetch } from "apollo-fetch";
 import { useForm } from "react-hook-form";
