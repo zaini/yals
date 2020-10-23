@@ -17,13 +17,18 @@ require("dotenv").config({ path: "../../.env" });
 const domain = process.env.REACT_APP_DOMAIN;
 const fetch = createApolloFetch({ uri: "http://localhost:4000/graphql" });
 
+// https://stackoverflow.com/questions/5717093/check-if-a-javascript-string-is-a-url
 let isUrl = (str) => {
-  try {
-    new URL(str);
-    return true;
-  } catch (e) {
-    return false;
-  }
+  var pattern = new RegExp(
+    "^(https?:\\/\\/)?" + // protocol
+      "((([a-z\\d]([a-z\\d-]*[a-z\\d])*)\\.)+[a-z]{2,}|" + // domain name
+      "((\\d{1,3}\\.){3}\\d{1,3}))" + // OR ip (v4) address
+      "(\\:\\d+)?(\\/[-a-z\\d%_.~+]*)*" + // port and path
+      "(\\?[;&a-z\\d%_.~+=-]*)?" + // query string
+      "(\\#[-a-z\\d_]*)?$",
+    "i"
+  ); // fragment locator
+  return !!pattern.test(str);
 };
 
 const LoggedHomePage = ({ user_id }) => {
