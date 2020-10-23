@@ -4,6 +4,7 @@ import {
   Button,
   FormControl,
   FormErrorMessage,
+  Heading,
   Input,
   Textarea,
 } from "@chakra-ui/core";
@@ -42,7 +43,8 @@ export default function ContactPage() {
   };
 
   return (
-    <Box mt={8} mx="auto" maxW="800px">
+    <Box mx="auto" maxW="800px">
+      <Heading>Contact</Heading>
       <form onSubmit={handleSubmit(onSubmit)}>
         <FormControl isInvalid={errors.name} mt={4}>
           <Input type="text" placeholder="Name" name="name" ref={register} />
