@@ -1,4 +1,4 @@
-# qasir - link shortener w/ custom URLs
+# yals - yet another link shortener (w/ custom URLs)
 
 A link shortener that allows you to set custom URLs, expiration dates and manage them from your account.
 
