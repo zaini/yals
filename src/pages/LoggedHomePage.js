@@ -17,11 +17,28 @@ require("dotenv").config({ path: "../../.env" });
 const domain = process.env.REACT_APP_DOMAIN;
 const fetch = createApolloFetch({ uri: "http://localhost:4000/graphql" });
 
+let isUrl = (str) => {
+  try {
+    new URL(str);
+    return true;
+  } catch (e) {
+    return false;
+  }
+};
+
 const LoggedHomePage = ({ user_id }) => {
   const [short_link, setShort_Link] = useState(null);
   const { register, handleSubmit, errors, setError } = useForm();
 
   const onSubmit = async (data) => {
+    if (!isUrl(data.link)) {
+      setError("link", {
+        type: "manual",
+        message: "That is not a valid link",
+      });
+      return;
+    }
+
     fetch({
       query: `{
         link_by_short_url(Short_URL: "${
@@ -60,6 +77,7 @@ const LoggedHomePage = ({ user_id }) => {
             }
           }`,
         }).then((res) => {
+          console.log(res.data);
           if (res.data.createLink) {
             console.log(res.data.createLink);
             setShort_Link(res.data.createLink.Short_URL);
