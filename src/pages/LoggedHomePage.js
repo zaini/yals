@@ -13,10 +13,12 @@ import { useForm } from "react-hook-form";
 import { createApolloFetch } from "apollo-fetch";
 import QRAndCopy from "../components/QRAndCopy";
 import isUrl from "../helpers/LinkValidation";
-require("dotenv").config();
+require("dotenv").config({ path: "../../.env" });
 
 const domain = process.env.REACT_APP_DOMAIN;
-const fetch = createApolloFetch({ uri: `http://localhost:${process.env.PORT}/graphql` });
+const fetch = createApolloFetch({
+  uri: `http://localhost:${process.env.PORT}/graphql`,
+});
 
 const LoggedHomePage = ({ user_id }) => {
   const [short_link, setShort_Link] = useState(null);
@@ -113,11 +115,7 @@ const LoggedHomePage = ({ user_id }) => {
 
         <InputGroup mt={4}>
           <InputLeftAddon children="Link Expiration" />
-          <Select
-            name="expiry_time"
-            ref={register}
-            defaultValue={-1}
-          >
+          <Select name="expiry_time" ref={register} defaultValue={-1}>
             <option value={-1}>Never</option>
             <option value={10 * 60 * 1000}>10 minutes</option>
             <option value={60 * 60 * 1000}>1 hour</option>

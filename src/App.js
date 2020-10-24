@@ -17,7 +17,7 @@ import {
   Icon,
 } from "@chakra-ui/core";
 import { useQuery, useMutation } from "urql";
-require("dotenv").config();
+require("dotenv").config({ path: "../../.env" });
 
 const domain = process.env.REACT_APP_DOMAIN;
 
