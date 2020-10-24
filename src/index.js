@@ -4,9 +4,10 @@ import "./index.css";
 import App from "./App";
 import { ThemeProvider, CSSReset, ColorModeProvider } from "@chakra-ui/core";
 import { createClient, Provider } from "urql";
+require("dotenv").config({ path: "../../.env" });
 
 const client = createClient({
-  url: "http://localhost:4000/graphql",
+  uri: `http://localhost:${process.env.PORT}/graphql`,
   fetchOptions: { credentials: "include" },
 });
 
