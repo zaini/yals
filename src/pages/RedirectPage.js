@@ -2,8 +2,9 @@ import React, { Component } from "react";
 import { Box } from "@chakra-ui/core";
 import { createApolloFetch } from "apollo-fetch";
 
-const fetch = createApolloFetch({ uri: `http://localhost:${process.env.PORT}/graphql` });
-
+const fetch = createApolloFetch({
+  uri: `/graphql`,
+});
 export default class RedirectPage extends Component {
   constructor(props) {
     super(props);

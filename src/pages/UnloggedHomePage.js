@@ -14,7 +14,7 @@ require("dotenv").config({ path: "../../.env" });
 
 const domain = process.env.REACT_APP_DOMAIN;
 const fetch = createApolloFetch({
-  uri: `http://localhost:${process.env.PORT}/graphql`,
+  uri: `/graphql`,
 });
 
 const UnloggedHomePage = () => {
