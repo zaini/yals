@@ -2,6 +2,8 @@
 
 A link shortener that allows you to set custom URLs, expiration dates and manage them from your account.
 
+http://yals.zreo.me/
+
 # Features
 
 * shorten any link
@@ -16,17 +18,17 @@ A link shortener that allows you to set custom URLs, expiration dates and manage
 
 # Soon
 
-* more functionality to accounts including account settings
+* more functionality to accounts including account settings (change password etc.)
 
 * analytics for your links, such as # of clicks, times, location etc. to better understand who's using your links
 
 # Setup
 
-You'll need a ```.env``` with the following variables ```MONGODB_URI```, ```SESSION_SECRET``` (any string for redis to use), ```REACT_APP_DOMAIN``` (the doamin for your link shortener e.g. ```qasir.com```), ```REACT_APP_GOOGLE_CLIENT_ID``` (Google API key for Google authentication)
+You'll need a ```.env``` with the following variables ```MONGODB_URI```, ```SESSION_SECRET``` (any string for redis to use), ```REACT_APP_DOMAIN``` (the domain for your link shortener e.g. ```yals.zreo.me```), ```REACT_APP_GOOGLE_CLIENT_ID``` (Google API key for Google authentication), ```REDISTOGO_URL``` (your redis to go link)
 
 # Other
 
-I planned and kept track of the project using [Trello.](https://trello.com/b/CNWKN2k5/linkshortener)
+I tried to plan and keep track of the project using [Trello.](https://trello.com/b/CNWKN2k5/linkshortener) But I mostly just used Notepad documents.
 
 ## Here's the stack I used:
 
@@ -38,4 +40,4 @@ I planned and kept track of the project using [Trello.](https://trello.com/b/CNW
 
 * Forms: react-hook-form (prefer this over formik)
 
-* Hosting: Vercel (could have used heroku or something else)
+* Hosting: Heroku (tried Vercel and gave up on DigitalOcean)
