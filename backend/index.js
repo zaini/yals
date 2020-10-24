@@ -10,7 +10,14 @@ const cors = require("cors");
 const path = require("path");
 
 const RedisStore = require("connect-redis")(session);
-const redisClient = redis.createClient();
+
+let redisClient;
+
+if (process.env.REDISTOGO_URL) {
+  redisClient = redis.createClient(process.env.REDISTOGO_URL);
+} else {
+  redisClient = redis.createClient();
+}
 
 const app = express();
 
