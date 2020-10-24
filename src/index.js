@@ -7,7 +7,7 @@ import { createClient, Provider } from "urql";
 require("dotenv").config({ path: "../../.env" });
 
 const client = createClient({
-  uri: `/graphql`,
+  url: `/graphql`,
   fetchOptions: { credentials: "include" },
 });
 
