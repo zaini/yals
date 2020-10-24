@@ -2,7 +2,7 @@ import React from "react";
 import { Box, Heading } from "@chakra-ui/core";
 import UnloggedHomePage from "./UnloggedHomePage";
 import LoggedHomePage from "./LoggedHomePage";
-require("dotenv").config({ path: "../../.env" });
+require("dotenv").config();
 
 const HomePage = ({ user_id }) => {
   return (

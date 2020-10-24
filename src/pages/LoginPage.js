@@ -9,7 +9,7 @@ import {
 import { useForm } from "react-hook-form";
 import { useMutation } from "urql";
 import GoogleLogin from "react-google-login";
-require("dotenv").config({ path: "../../.env" });
+require("dotenv").config();
 
 const client_id = process.env.REACT_APP_GOOGLE_CLIENT_ID;
 

@@ -11,16 +11,16 @@ import {
   Box,
   Flex,
   Text,
-  Image,
   Link,
   Button,
   useColorMode,
   Icon,
 } from "@chakra-ui/core";
 import { useQuery, useMutation } from "urql";
-require("dotenv").config({ path: "../../.env" });
+require("dotenv").config();
 
 const domain = process.env.REACT_APP_DOMAIN;
+
 const ME_QUERY = `query {
   me {
     id
@@ -42,7 +42,7 @@ function App() {
   let body = null;
 
   if (fetching) {
-  } else if (data.me !== null) {
+  } else if (data && data.me !== null) {
     user_id = data.me.id;
     body = (
       <>

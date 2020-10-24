@@ -10,7 +10,7 @@ import { createApolloFetch } from "apollo-fetch";
 import { useForm } from "react-hook-form";
 import QRAndCopy from "../components/QRAndCopy";
 import isUrl from "../helpers/LinkValidation";
-require("dotenv").config({ path: "../../.env" });
+require("dotenv").config();
 
 const domain = process.env.REACT_APP_DOMAIN;
 const fetch = createApolloFetch({ uri: "http://localhost:4000/graphql" });

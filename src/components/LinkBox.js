@@ -1,6 +1,6 @@
 import React from "react";
 import { Box, Divider, IconButton } from "@chakra-ui/core";
-import QRAndCopy from "../components/QRAndCopy";
+import QRAndCopy from "./QRAndCopy";
 import EditLinkBox from "./EditLinkBox";
 
 const domain = process.env.REACT_APP_DOMAIN;
