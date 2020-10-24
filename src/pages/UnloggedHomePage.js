@@ -13,7 +13,7 @@ import isUrl from "../helpers/LinkValidation";
 require("dotenv").config();
 
 const domain = process.env.REACT_APP_DOMAIN;
-const fetch = createApolloFetch({ uri: "http://localhost:4000/graphql" });
+const fetch = createApolloFetch({ uri: `http://localhost:${process.env.PORT}/graphql` });
 
 const UnloggedHomePage = () => {
   const [short_link, setShort_Link] = useState(undefined);
