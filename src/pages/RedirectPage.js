@@ -61,7 +61,7 @@ export default class RedirectPage extends Component {
           </Heading>
         ) : (
           <Heading textAlign="center">
-            Trying to find your link... if it doesn't load, it proabably doesn't
+            Trying to find your link... if it doesn't load, it probably doesn't
             exist or has expired
           </Heading>
         )}
