@@ -24,6 +24,10 @@ http://yals.zreo.me/
 
 * mobile-friendly design
 
+# Bugs
+
+* email and link validation
+
 # Setup
 
 You'll need a ```.env``` with the following variables ```MONGODB_URI```, ```SESSION_SECRET``` (any string for redis to use), ```REACT_APP_DOMAIN``` (the domain for your link shortener e.g. ```yals.zreo.me```), ```REACT_APP_GOOGLE_CLIENT_ID``` (Google API key for Google authentication), ```REDISTOGO_URL``` (your redis to go link)
