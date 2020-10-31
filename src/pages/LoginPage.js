@@ -5,6 +5,7 @@ import {
   Input,
   FormControl,
   FormErrorMessage,
+  Heading,
 } from "@chakra-ui/core";
 import { useForm } from "react-hook-form";
 import { useMutation } from "urql";
@@ -44,7 +45,8 @@ export default function SignUpPage() {
   };
 
   return (
-    <Box mt={8} mx="auto" maxW="800px">
+    <Box>
+      <Heading>Login</Heading>
       <form onSubmit={handleSubmit(onSubmit)}>
         <FormControl isInvalid={errors.email} mt={4}>
           <Input type="email" placeholder="email" name="email" ref={register} />

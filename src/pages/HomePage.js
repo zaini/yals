@@ -5,7 +5,7 @@ import LoggedHomePage from "./LoggedHomePage";
 
 const HomePage = ({ user_id }) => {
   return (
-    <Box id="homepage" w="50%" margin="auto">
+    <Box mx="auto" maxW="800px" p="10px">
       <Heading>Shorten your links with yals</Heading>
       {user_id ? <LoggedHomePage user_id={user_id} /> : <UnloggedHomePage />}
     </Box>

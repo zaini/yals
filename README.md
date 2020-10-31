@@ -28,9 +28,7 @@ http://yals.zreo.me/
 
 - forms clear when changing colour mode
 
-- account page messes up when you have a long link
-
-- invalid emails may be accepted when creating accounts
+- invalid emails may be accepted when creating accounts (will be fixed by requiring account to be validated)
 
 - some links are not accepted as valid
 

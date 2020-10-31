@@ -158,20 +158,22 @@ function App() {
         </Box>
       </Flex>
 
-      <Router>
-        <Switch>
-          <Route
-            exact
-            path={"/"}
-            component={() => <HomePage user_id={user_id} />}
-          />
-          <Route path={"/contact"} component={ContactPage} />
-          <Route path={"/login"} component={LoginPage} />
-          <Route path={"/signup"} component={SignUpPage} />
-          <Route path={"/account"} component={AccountPage} />
-          <Route exact path={"/:short_id"} component={RedirectPage} />
-        </Switch>
-      </Router>
+      <Box mt={4} mx="auto" maxW="800px" p="15px">
+        <Router>
+          <Switch>
+            <Route
+              exact
+              path={"/"}
+              component={() => <HomePage user_id={user_id} />}
+            />
+            <Route path={"/contact"} component={ContactPage} />
+            <Route path={"/login"} component={LoginPage} />
+            <Route path={"/signup"} component={SignUpPage} />
+            <Route path={"/account"} component={AccountPage} />
+            <Route exact path={"/:short_id"} component={RedirectPage} />
+          </Switch>
+        </Router>
+      </Box>
     </Box>
   );
 }
