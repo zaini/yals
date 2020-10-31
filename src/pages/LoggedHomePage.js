@@ -60,7 +60,7 @@ const LoggedHomePage = ({ user_id }) => {
             createLink(
               Short_ID: "${data.short_id}"
               Base_URL: "${data.link}"
-              Expires_At: ${data.expiry_time}
+              Expires_At: "${data.expiry_time}"
               Created_By: "${user_id}"
             ) {
               Base_URL

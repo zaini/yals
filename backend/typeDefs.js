@@ -46,7 +46,7 @@ const typeDefs = gql`
   type Mutation {
     createLink(
       Created_By: String
-      Expires_At: Int
+      Expires_At: String
       Base_URL: String!
       Short_ID: String
     ): Link!
