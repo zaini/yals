@@ -1,5 +1,12 @@
 import React, { useState } from "react";
-import { Box, Icon, Input, InputGroup, InputLeftAddon } from "@chakra-ui/core";
+import {
+  Flex,
+  Box,
+  Icon,
+  Input,
+  InputGroup,
+  InputLeftAddon,
+} from "@chakra-ui/core";
 import { CopyToClipboard } from "react-copy-to-clipboard";
 import QRCode from "qrcode.react";
 
@@ -7,8 +14,8 @@ const QRAndCopy = ({ link }) => {
   const [copied, setCopied] = useState(false);
 
   return (
-    <Box>
-      <InputGroup mb="10px">
+    <Flex flexDirection="column" justifyContent="center" alignItems="center">
+      <InputGroup mb="10px" width="100%">
         <InputLeftAddon
           children={
             <CopyToClipboard
@@ -20,12 +27,10 @@ const QRAndCopy = ({ link }) => {
             </CopyToClipboard>
           }
         />
-        <Input type="text" name="id" defaultValue={link} isReadOnly={true} />
+        <Input type="text" name="id" value={link} isReadOnly={true} />
       </InputGroup>
-      <Box margin="0 auto" width="50%">
-        <QRCode value={link} />
-      </Box>
-    </Box>
+      <QRCode value={link} />
+    </Flex>
   );
 };
 
