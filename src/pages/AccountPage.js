@@ -80,7 +80,7 @@ export default function SignUpPage() {
         <Divider />
         <b>Created:</b> {new Date(parseInt(data.me.Created_At)).toUTCString()}
         <Divider />
-        <Grid templateColumns="repeat(4, 1fr)">
+        <Grid templateColumns="repeat(auto-fit, minmax(300px, 1fr))">
           {links_data.my_links.map((e, i) => {
             return (
               <LinkBox

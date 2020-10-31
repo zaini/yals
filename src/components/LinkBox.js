@@ -1,5 +1,5 @@
 import React from "react";
-import { Box, Divider, IconButton } from "@chakra-ui/core";
+import { Box, Divider, IconButton, Input } from "@chakra-ui/core";
 import QRAndCopy from "./QRAndCopy";
 import EditLinkBox from "./EditLinkBox";
 
@@ -15,10 +15,14 @@ export default function LinkBox({
   return (
     <Box m="1" p="4" border="2px" borderColor="grey" borderRadius="md">
       <Box>
-        <b>Destination:</b> {e.Base_URL}
+        <b>Destination:</b> <Input value={e.Base_URL} isReadOnly={true} />
       </Box>
       <Box>
-        <b>Created:</b> {new Date(parseInt(e.Created_At)).toUTCString()}
+        <b>Created:</b>{" "}
+        <Input
+          value={new Date(parseInt(e.Created_At)).toUTCString()}
+          isReadOnly={true}
+        />
       </Box>
       <Box>
         <b>Expires:</b>{" "}
