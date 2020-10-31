@@ -45,7 +45,7 @@ export default function SignUpPage() {
   };
 
   return (
-    <Box>
+    <Box mx="auto" maxW="800px">
       <Heading>Sign Up</Heading>
       <form onSubmit={handleSubmit(onSubmit)}>
         <FormControl isInvalid={errors.email} mt={4}>

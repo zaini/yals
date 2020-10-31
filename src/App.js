@@ -158,7 +158,7 @@ function App() {
         </Box>
       </Flex>
 
-      <Box mt={4} mx="auto" maxW="800px" p="15px">
+      <Box mt={4} mx="auto" maxW="1200px" p="15px">
         <Router>
           <Switch>
             <Route

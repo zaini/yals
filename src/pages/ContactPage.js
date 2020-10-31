@@ -42,7 +42,7 @@ export default function ContactPage() {
   };
 
   return (
-    <Box>
+    <Box mx="auto" maxW="800px">
       <Heading>Contact</Heading>
       <form onSubmit={handleSubmit(onSubmit)}>
         <FormControl isInvalid={errors.name} mt={4}>
