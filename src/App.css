@@ -1,3 +1,18 @@
-.navbar-links .link{
-    margin-right: 50px;
+.navbar-links-menu {
+  display: inline;
+}
+.navbar-links {
+  display: none;
+}
+.link {
+  margin-right: 50px;
+}
+
+@media screen and (min-width: 730px) {
+  .navbar-links-menu {
+    display: none;
+  }
+  .navbar-links {
+    display: inline;
+  }
 }

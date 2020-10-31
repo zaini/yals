@@ -15,6 +15,11 @@ import {
   Button,
   useColorMode,
   Icon,
+  MenuItem,
+  MenuList,
+  Menu,
+  MenuButton,
+  MenuDivider,
 } from "@chakra-ui/core";
 import { useQuery, useMutation } from "urql";
 require("dotenv").config({ path: "../../.env" });
@@ -40,37 +45,57 @@ function App() {
   const { colorMode, toggleColorMode } = useColorMode();
 
   let body = null;
+  let menu_body = null;
 
   if (fetching) {
   } else if (data && data.me !== null) {
     user_id = data.me.id;
-    body = (
-      <>
-        <Link className="link" href={"/account"}>
-          {data.me.UserName}
-        </Link>
-        <Button
-          onClick={() => {
-            logout();
-            window.location.replace("/");
-          }}
-          isLoading={res.fetching}
-        >
-          Logout
-        </Button>
-      </>
-    );
+    body = [
+      <Link className="link" href={"/account"}>
+        {data.me.UserName}
+      </Link>,
+      <Button
+        onClick={() => {
+          logout();
+          window.location.replace("/");
+        }}
+        isLoading={res.fetching}
+      >
+        Logout
+      </Button>,
+    ];
+    menu_body = [
+      <MenuItem as="a" href={"/account"}>
+        {data.me.UserName}
+      </MenuItem>,
+      <MenuItem
+        as="Button"
+        onClick={() => {
+          logout();
+          window.location.replace("/");
+        }}
+        isLoading={res.fetching}
+      >
+        Logout
+      </MenuItem>,
+    ];
   } else {
-    body = (
-      <>
-        <Link className="link" href={"/login"}>
-          Login
-        </Link>
-        <Link className="link" href={"/signup"}>
-          Sign Up
-        </Link>
-      </>
-    );
+    body = [
+      <Link className="link" href={"/login"}>
+        Login
+      </Link>,
+      <Link className="link" href={"/signup"}>
+        Sign Up
+      </Link>,
+    ];
+    menu_body = [
+      <MenuItem as="a" href={"/login"}>
+        Login
+      </MenuItem>,
+      <MenuItem as="a" href={"/signup"}>
+        Sign Up
+      </MenuItem>,
+    ];
   }
 
   return (
@@ -85,6 +110,35 @@ function App() {
             <b>{domain}</b>
           </Text>
         </Flex>
+
+        <Box className="navbar-links-menu">
+          <Menu>
+            <MenuButton as={Button} rightIcon="chevron-down" mr="15px">
+              <Icon name="drag-handle" />
+            </MenuButton>
+            <MenuList>
+              <MenuItem as="a" className="link" href={"/"}>
+                Home
+              </MenuItem>
+              <MenuItem as="a" className="link" href={"/contact"}>
+                Contact
+              </MenuItem>
+              <MenuDivider />
+              {menu_body ? menu_body[0] : null}
+              {menu_body ? menu_body[1] : null}
+              <MenuDivider />
+              <MenuItem>
+                <Button onClick={toggleColorMode} marginRight="50px">
+                  {colorMode === "light" ? (
+                    <Icon name="moon" width="auto" />
+                  ) : (
+                    <Icon name="sun" />
+                  )}
+                </Button>
+              </MenuItem>
+            </MenuList>
+          </Menu>
+        </Box>
 
         <Box className="navbar-links">
           <Link className="link" href={"/"}>
