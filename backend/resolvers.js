@@ -44,7 +44,9 @@ const resolvers = {
   Mutation: {
     // First argument is parent, which we don't need. Second parameter is the arguments, so we destructure for what we want.
     createLink: (_, { Created_By, Expires_At, Base_URL, Short_ID }) => {
-      Expires_At = parseInt(Expires_At);
+      if (Expires_At) {
+        Expires_At = parseInt(Expires_At);
+      }
       let expiry_date = null;
       if (!(Expires_At === undefined || Expires_At === -1)) {
         let current_date = new Date();
