@@ -5,63 +5,40 @@ import {
   Input,
   FormControl,
   FormErrorMessage,
-} from "@chakra-ui/core";
-import { createApolloFetch } from "apollo-fetch";
+} from "@chakra-ui/react";
+import {
+  Alert,
+  AlertIcon,
+  AlertTitle,
+  AlertDescription,
+} from "@chakra-ui/react";
+import gql from "graphql-tag";
 import { useForm } from "react-hook-form";
 import QRAndCopy from "../components/QRAndCopy";
-import isUrl from "../helpers/LinkValidation";
+import { useMutation } from "@apollo/react-hooks";
 require("dotenv").config({ path: "../../.env" });
 
 const domain = process.env.REACT_APP_DOMAIN;
-const fetch = createApolloFetch({
-  uri: `/graphql`,
-});
 
 const UnloggedHomePage = () => {
-  const [short_link, setShort_Link] = useState(undefined);
+  const [shortLink, setShortLink] = useState(undefined);
   const { register, handleSubmit, errors, setError } = useForm();
 
-  const onSubmit = async ({ link }) => {
-    let response = await shorten(link);
-    setShort_Link(response);
-  };
-
-  const shorten = async (link) => {
-    if (!isUrl(link)) {
+  const [createLink, { loading }] = useMutation(CREATE_LINK, {
+    onCompleted(res) {
+      setShortLink(res.createLink.Short_URL);
+    },
+    onError(_) {
+      console.log(_, _.message);
       setError("link", {
         type: "manual",
-        message: "That is not a valid link",
+        message: _.message,
       });
-      return;
-    }
+    },
+  });
 
-    return await fetch({
-      query: `{link_by_base_url(Base_URL: "${link}"){
-        Short_URL
-      }
-    }`,
-    }).then((res) => {
-      if (res.data.link_by_base_url[0]) {
-        return res.data.link_by_base_url[0].Short_URL;
-      } else {
-        return fetch({
-          query: `mutation{
-            createLink(Base_URL: "${link}"){
-              Short_URL
-            }
-          }`,
-        }).then((res) => {
-          if (res) {
-            return res.data.createLink.Short_URL;
-          } else {
-            setError("link", {
-              type: "manual",
-              message: "Could not create a link successfully.",
-            });
-          }
-        });
-      }
-    });
+  const onSubmit = ({ link }) => {
+    createLink({ variables: { Base_URL: link } });
   };
 
   return (
@@ -81,14 +58,25 @@ const UnloggedHomePage = () => {
           </FormErrorMessage>
         </FormControl>
 
-        <Button mt={4} mb={4} type="submit">
+        <Button mt={4} mb={4} type="submit" isLoading={loading}>
           Convert!
         </Button>
       </form>
 
-      {short_link ? <QRAndCopy link={domain + "/" + short_link} /> : null}
+      {shortLink && <QRAndCopy link={domain + "/" + shortLink} />}
     </Box>
   );
 };
 
 export default UnloggedHomePage;
+
+const CREATE_LINK = gql`
+  mutation createNewLink($Base_URL: String!) {
+    createLink(Base_URL: $Base_URL) {
+      id
+      Created_At
+      Short_URL
+      Base_URL
+    }
+  }
+`;
