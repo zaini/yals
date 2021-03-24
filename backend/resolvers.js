@@ -4,6 +4,7 @@ const { nanoid } = require("nanoid");
 const argon2 = require("argon2");
 const User = require("./models/User");
 const Message = require("./models/Message");
+const isUrl = require("../src/helpers/LinkValidation");
 
 // Writing what each function actually returns. This should be from mongoDB
 const resolvers = {
@@ -43,7 +44,11 @@ const resolvers = {
   },
   Mutation: {
     // First argument is parent, which we don't need. Second parameter is the arguments, so we destructure for what we want.
-    createLink: (_, { Created_By, Expires_At, Base_URL, Short_ID }) => {
+    createLink: async (_, { Created_By, Expires_At, Base_URL, Short_ID }) => {
+      if (!isUrl(Base_URL)) {
+        throw new Error("This is not a valid link.");
+      }
+
       if (Expires_At) {
         Expires_At = parseInt(Expires_At);
       }
@@ -53,15 +58,32 @@ const resolvers = {
         expiry_date = current_date.getTime() + Expires_At;
       }
 
-      let short_id = Short_ID === undefined ? nanoid(7) : Short_ID;
-      const link = new Link({
-        Created_By: Created_By === undefined ? null : Created_By,
-        Created_At: new Date(),
-        Expires_At: expiry_date,
-        Base_URL: Base_URL,
-        Short_URL: short_id,
-      });
-      link.save();
+      let link;
+      // if short_id, check it's not used and then create it
+      if (Short_ID) {
+        let res = await Link.findOne({ Short_URL: Short_ID }).exec();
+        if (res) {
+          throw new Error("This is short ID is already in use.");
+        } else {
+          link = new Link({
+            Created_By: Created_By === undefined ? null : Created_By,
+            Created_At: new Date(),
+            Expires_At: expiry_date,
+            Base_URL: Base_URL,
+            Short_URL: Short_ID,
+          });
+          link.save();
+        }
+      } else {
+        link = new Link({
+          Created_At: new Date(),
+          Expires_At: expiry_date,
+          Base_URL: Base_URL,
+          Short_URL: nanoid(7),
+        });
+        link.save();
+      }
+
       return link;
     },
     editLink: (_, { ID, New_Expiry }) => {
