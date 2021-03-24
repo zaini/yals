@@ -6,7 +6,7 @@ import {
   Input,
   InputGroup,
   InputLeftAddon,
-} from "@chakra-ui/core";
+} from "@chakra-ui/react";
 import { CopyToClipboard } from "react-copy-to-clipboard";
 import QRCode from "qrcode.react";
 

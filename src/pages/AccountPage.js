@@ -1,5 +1,5 @@
 import React from "react";
-import { Box, Heading, Divider, Grid } from "@chakra-ui/core";
+import { Box, Heading, Divider, Grid } from "@chakra-ui/react";
 import { useQuery, useMutation } from "urql";
 import { useForm } from "react-hook-form";
 import LinkBox from "../components/LinkBox";

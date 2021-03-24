@@ -6,7 +6,7 @@ import {
   FormControl,
   FormErrorMessage,
   Heading,
-} from "@chakra-ui/core";
+} from "@chakra-ui/react";
 import { useForm } from "react-hook-form";
 import { useMutation } from "urql";
 import GoogleLogin from "react-google-login";

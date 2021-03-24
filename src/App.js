@@ -14,14 +14,14 @@ import {
   Link,
   Button,
   useColorMode,
-  Icon,
   MenuItem,
   MenuList,
   Menu,
   MenuButton,
   MenuDivider,
-} from "@chakra-ui/core";
+} from "@chakra-ui/react";
 import { useQuery, useMutation } from "urql";
+import { DragHandleIcon, MoonIcon, SunIcon } from "@chakra-ui/icons";
 require("dotenv").config({ path: "../../.env" });
 
 const domain = process.env.REACT_APP_DOMAIN;
@@ -114,7 +114,7 @@ function App() {
         <Box className="navbar-links-menu">
           <Menu>
             <MenuButton as={Button} rightIcon="chevron-down" mr="15px">
-              <Icon name="drag-handle" />
+              <DragHandleIcon />
             </MenuButton>
             <MenuList>
               <MenuItem as="a" className="link" href={"/"}>
@@ -129,11 +129,7 @@ function App() {
               <MenuDivider />
               <MenuItem>
                 <Button onClick={toggleColorMode} marginRight="50px">
-                  {colorMode === "light" ? (
-                    <Icon name="moon" width="auto" />
-                  ) : (
-                    <Icon name="sun" />
-                  )}
+                  {colorMode === "light" ? <MoonIcon /> : <SunIcon />}
                 </Button>
               </MenuItem>
             </MenuList>
@@ -149,11 +145,7 @@ function App() {
           </Link>
           {body}
           <Button onClick={toggleColorMode} marginRight="50px">
-            {colorMode === "light" ? (
-              <Icon name="moon" width="auto" />
-            ) : (
-              <Icon name="sun" />
-            )}
+            {colorMode === "light" ? <MoonIcon /> : <SunIcon />}
           </Button>
         </Box>
       </Flex>

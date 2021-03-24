@@ -1,5 +1,5 @@
 import React from "react";
-import { Box, Heading } from "@chakra-ui/core";
+import { Box, Heading } from "@chakra-ui/react";
 import UnloggedHomePage from "./UnloggedHomePage";
 import LoggedHomePage from "./LoggedHomePage";
 

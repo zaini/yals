@@ -1,5 +1,5 @@
 import React from "react";
-import { IconButton } from "@chakra-ui/core";
+import { IconButton } from "@chakra-ui/react";
 import {
   Button,
   Input,
@@ -7,7 +7,7 @@ import {
   InputLeftAddon,
   InputGroup,
   FormControl,
-} from "@chakra-ui/core";
+} from "@chakra-ui/react";
 import Popup from "reactjs-popup";
 
 const domain = process.env.REACT_APP_DOMAIN;

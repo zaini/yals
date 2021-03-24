@@ -1,5 +1,5 @@
 import React from "react";
-import { Box, Divider, IconButton, Input } from "@chakra-ui/core";
+import { Box, Divider, IconButton, Input } from "@chakra-ui/react";
 import QRAndCopy from "./QRAndCopy";
 import EditLinkBox from "./EditLinkBox";
 

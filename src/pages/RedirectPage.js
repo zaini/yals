@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Box, Heading } from "@chakra-ui/core";
+import { Box, Heading } from "@chakra-ui/react";
 import { createApolloFetch } from "apollo-fetch";
 
 const fetch = createApolloFetch({
