@@ -31,6 +31,10 @@ const typeDefs = gql`
     errors: [FieldError]
     message: Message
   }
+  type LinkResponse {
+    errors: [FieldError]
+    link: Link
+  }
   type FieldError {
     field: String
     message: String
@@ -49,7 +53,7 @@ const typeDefs = gql`
       Expires_At: String
       Base_URL: String!
       Short_ID: String
-    ): Link!
+    ): LinkResponse!
     editLink(ID: String!, New_Expiry: String!): Link!
     deleteLink(ID: String): Link
     registerUser(

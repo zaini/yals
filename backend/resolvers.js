@@ -45,8 +45,11 @@ const resolvers = {
   Mutation: {
     // First argument is parent, which we don't need. Second parameter is the arguments, so we destructure for what we want.
     createLink: async (_, { Created_By, Expires_At, Base_URL, Short_ID }) => {
+      console.log(Created_By, Expires_At, Base_URL, Short_ID);
       if (!isUrl(Base_URL)) {
-        throw new Error("This is not a valid link.");
+        return {
+          errors: [{ field: "link", message: "That is not a valid link" }],
+        };
       }
 
       if (Expires_At) {
@@ -63,7 +66,11 @@ const resolvers = {
       if (Short_ID) {
         let res = await Link.findOne({ Short_URL: Short_ID }).exec();
         if (res) {
-          throw new Error("This is short ID is already in use.");
+          return {
+            errors: [
+              { field: "short_id", message: "That short ID is already in use" },
+            ],
+          };
         } else {
           link = new Link({
             Created_By: Created_By === undefined ? null : Created_By,
@@ -84,7 +91,7 @@ const resolvers = {
         link.save();
       }
 
-      return link;
+      return { link };
     },
     editLink: (_, { ID, New_Expiry }) => {
       New_Expiry = parseInt(New_Expiry);
