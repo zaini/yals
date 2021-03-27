@@ -6,12 +6,6 @@ import {
   FormControl,
   FormErrorMessage,
 } from "@chakra-ui/react";
-import {
-  Alert,
-  AlertIcon,
-  AlertTitle,
-  AlertDescription,
-} from "@chakra-ui/react";
 import gql from "graphql-tag";
 import { useForm } from "react-hook-form";
 import QRAndCopy from "../components/QRAndCopy";
@@ -29,7 +23,6 @@ const UnloggedHomePage = () => {
       setShortLink(res.createLink.Short_URL);
     },
     onError(_) {
-      console.log(_, _.message);
       setError("link", {
         type: "manual",
         message: _.message,

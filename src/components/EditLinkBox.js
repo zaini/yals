@@ -62,11 +62,7 @@ export default function EditLinkBox({
 
         <InputGroup mt={4}>
           <InputLeftAddon children="Link Expiration" />
-          <Select
-            name="expiry_time"
-            ref={register}
-            defaultValue={-1}
-          >
+          <Select name="expiry_time" ref={register} defaultValue={-1}>
             <option value={-1}>Never</option>
             <option value={10 * 60 * 1000}>10 minutes</option>
             <option value={60 * 60 * 1000}>1 hour</option>
