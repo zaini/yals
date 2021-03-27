@@ -16,75 +16,42 @@ import gql from "graphql-tag";
 import { useForm } from "react-hook-form";
 import QRAndCopy from "../components/QRAndCopy";
 import { useMutation } from "@apollo/react-hooks";
-import { createApolloFetch } from "apollo-fetch";
-import isUrl from "../helpers/LinkValidation";
 import { nanoid } from "nanoid";
 require("dotenv").config({ path: "../../.env" });
 
 const domain = process.env.REACT_APP_DOMAIN;
-const fetch = createApolloFetch({
-  uri: `/graphql`,
-});
 
 const LoggedHomePage = ({ user_id }) => {
-  const [short_link, setShort_Link] = useState(null);
-  const { register, handleSubmit, errors, setError } = useForm();
+  const [shortLink, setShortLink] = useState(undefined);
   const [shortId, setShortId] = useState("");
+  const { register, handleSubmit, errors, setError } = useForm();
 
-  const onSubmit = async (data) => {
-    if (!isUrl(data.link)) {
-      setError("link", {
-        type: "manual",
-        message: "That is not a valid link",
-      });
-      return;
-    }
-
-    fetch({
-      query: `{
-        link_by_short_url(Short_URL: "${
-          data.short_id
-        }", Expires_At: ${new Date().getTime()}) {
-          id
-          Base_URL
-          Expires_At
-        }
-      }`,
-    }).then((res) => {
-      let currentDate = new Date();
-      if (
-        res.data.link_by_short_url &&
-        (res.data.link_by_short_url.Expires_At === null ||
-          res.data.link_by_short_url.Expires_At > currentDate.getTime())
-      ) {
-        setError("short_id", {
-          type: "manual",
-          message: "That short ID is already in use",
+  const [createLink, { loading }] = useMutation(CREATE_LINK, {
+    onCompleted(res) {
+      if (res.createLink.errors) {
+        res.createLink.errors.forEach(({ field, message }) => {
+          setError(field, { type: "manual", message });
         });
       } else {
-        fetch({
-          query: `mutation{
-            createLink(
-              Short_ID: "${data.short_id}"
-              Base_URL: "${data.link}"
-              Expires_At: "${data.expiry_time}"
-              Created_By: "${user_id}"
-            ) {
-              Base_URL
-              Short_URL
-            }
-          }`,
-        }).then((res) => {
-          if (res.data.createLink) {
-            setShort_Link(res.data.createLink.Short_URL);
-          } else {
-            setError("link", {
-              type: "manual",
-              message: "Could not create a link successfully.",
-            });
-          }
-        });
+        setShortLink(res.createLink.link.Short_URL);
       }
+    },
+    onError(_) {
+      setError("link", {
+        type: "manual",
+        message: _.message,
+      });
+    },
+  });
+
+  const onSubmit = (data) => {
+    createLink({
+      variables: {
+        Short_ID: data.short_id,
+        Base_URL: data.link,
+        Expires_At: data.expiry_time,
+        Created_By: user_id,
+      },
     });
   };
 
@@ -148,9 +115,36 @@ const LoggedHomePage = ({ user_id }) => {
         </Button>
       </form>
 
-      {short_link ? <QRAndCopy link={domain + "/" + short_link} /> : null}
+      {shortLink && <QRAndCopy link={domain + "/" + shortLink} />}
     </Box>
   );
 };
 
 export default LoggedHomePage;
+
+const CREATE_LINK = gql`
+  mutation createNewLink(
+    $Short_ID: String!
+    $Base_URL: String!
+    $Expires_At: String!
+    $Created_By: String!
+  ) {
+    createLink(
+      Short_ID: $Short_ID
+      Base_URL: $Base_URL
+      Expires_At: $Expires_At
+      Created_By: $Created_By
+    ) {
+      errors {
+        field
+        message
+      }
+      link {
+        id
+        Created_At
+        Short_URL
+        Base_URL
+      }
+    }
+  }
+`;

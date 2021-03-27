@@ -20,7 +20,13 @@ const UnloggedHomePage = () => {
 
   const [createLink, { loading }] = useMutation(CREATE_LINK, {
     onCompleted(res) {
-      setShortLink(res.createLink.Short_URL);
+      if (res.createLink.errors) {
+        res.createLink.errors.forEach(({ field, message }) => {
+          setError(field, { type: "manual", message });
+        });
+      } else {
+        setShortLink(res.createLink.link.Short_URL);
+      }
     },
     onError(_) {
       setError("link", {
@@ -66,10 +72,16 @@ export default UnloggedHomePage;
 const CREATE_LINK = gql`
   mutation createNewLink($Base_URL: String!) {
     createLink(Base_URL: $Base_URL) {
-      id
-      Created_At
-      Short_URL
-      Base_URL
+      errors {
+        field
+        message
+      }
+      link {
+        id
+        Created_At
+        Short_URL
+        Base_URL
+      }
     }
   }
 `;
