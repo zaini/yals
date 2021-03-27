@@ -8,6 +8,7 @@ import {
   InputGroup,
   FormControl,
 } from "@chakra-ui/react";
+import { EditIcon } from "@chakra-ui/icons";
 import Popup from "reactjs-popup";
 
 const domain = process.env.REACT_APP_DOMAIN;
@@ -27,7 +28,7 @@ export default function EditLinkBox({
 }) {
   return (
     <Popup
-      trigger={<IconButton m={2} icon="edit" />}
+      trigger={<IconButton m={2} icon={<EditIcon />} />}
       modal
       nested
       {...{

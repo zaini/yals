@@ -2,6 +2,7 @@ import React from "react";
 import { Box, Divider, IconButton, Input } from "@chakra-ui/react";
 import QRAndCopy from "./QRAndCopy";
 import EditLinkBox from "./EditLinkBox";
+import { DeleteIcon } from "@chakra-ui/icons";
 
 const domain = process.env.REACT_APP_DOMAIN;
 
@@ -42,7 +43,11 @@ export default function LinkBox({
           onSubmit={onSubmit}
           register={register}
         />
-        <IconButton m={2} icon="delete" onClick={() => deleteLink(e.id)} />
+        <IconButton
+          m={2}
+          icon={<DeleteIcon />}
+          onClick={() => deleteLink(e.id)}
+        />
       </Box>
       <Box fontSize={10} textAlign="center">
         Link ID: {e.id}
