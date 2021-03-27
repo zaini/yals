@@ -8,11 +8,17 @@ import {
   InputGroup,
   FormControl,
   FormErrorMessage,
+  InputRightAddon,
+  IconButton,
 } from "@chakra-ui/react";
+import { FaDice } from "react-icons/fa";
+import gql from "graphql-tag";
 import { useForm } from "react-hook-form";
-import { createApolloFetch } from "apollo-fetch";
 import QRAndCopy from "../components/QRAndCopy";
+import { useMutation } from "@apollo/react-hooks";
+import { createApolloFetch } from "apollo-fetch";
 import isUrl from "../helpers/LinkValidation";
+import { nanoid } from "nanoid";
 require("dotenv").config({ path: "../../.env" });
 
 const domain = process.env.REACT_APP_DOMAIN;
@@ -23,6 +29,7 @@ const fetch = createApolloFetch({
 const LoggedHomePage = ({ user_id }) => {
   const [short_link, setShort_Link] = useState(null);
   const { register, handleSubmit, errors, setError } = useForm();
+  const [shortId, setShortId] = useState("");
 
   const onSubmit = async (data) => {
     if (!isUrl(data.link)) {
@@ -103,9 +110,19 @@ const LoggedHomePage = ({ user_id }) => {
             <InputLeftAddon children={domain} />
             <Input
               type="text"
+              value={shortId}
+              onChange={(e) => setShortId(e.value)}
               placeholder="Custom short ID"
               name="short_id"
               ref={register({ required: "You must enter an ID" })}
+            />
+            <InputRightAddon
+              children={
+                <IconButton
+                  icon={<FaDice />}
+                  onClick={() => setShortId(nanoid(7))}
+                />
+              }
             />
           </InputGroup>
           <FormErrorMessage>
