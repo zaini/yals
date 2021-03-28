@@ -5,7 +5,7 @@ import { ApolloProvider } from "@apollo/react-hooks";
 import { ChakraProvider, CSSReset } from "@chakra-ui/react";
 
 const client = new ApolloClient({
-  uri: "http://localhost:4000/graphql",
+  uri: "/graphql",
   connectToDevTools: true,
   cache: new InMemoryCache(),
 });
