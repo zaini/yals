@@ -1,4 +1,3 @@
-const { gql } = require("apollo-server-express");
 const Link = require("./models/Link");
 const { nanoid } = require("nanoid");
 const argon2 = require("argon2");
@@ -21,6 +20,20 @@ const resolvers = {
           { Expires_At: { $eq: null } },
         ],
       });
+    },
+    getLinkForRedirect: async (_, { Short_URL }) => {
+      const link = await Link.findOne({
+        Short_URL: Short_URL,
+        $or: [
+          { Expires_At: { $gt: new Date().getTime() } },
+          { Expires_At: { $eq: null } },
+        ],
+      });
+
+      if (!link) {
+        throw new Error("Link either doesn't exist or has expired 😢");
+      }
+      return link;
     },
     link_by_base_url: (_, { Base_URL }) =>
       Link.find({ Base_URL: Base_URL, Created_By: null }),

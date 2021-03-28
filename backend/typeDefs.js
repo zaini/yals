@@ -42,6 +42,7 @@ const typeDefs = gql`
   type Query {
     links: [Link]!
     link_by_short_url(Short_URL: String!, Expires_At: Float): Link # having to use float because BigInt isn't a thing
+    getLinkForRedirect(Short_URL: String!): Link
     link_by_base_url(Base_URL: String!): [Link]
     users: [User]!
     me: User

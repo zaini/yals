@@ -1,71 +1,76 @@
-import React, { Component } from "react";
-import { Box, Heading } from "@chakra-ui/react";
-import { createApolloFetch } from "apollo-fetch";
+import React from "react";
+import {
+  Container,
+  Center,
+  Text,
+  Stack,
+  Alert,
+  AlertIcon,
+} from "@chakra-ui/react";
+import { useQuery } from "@apollo/client";
+import gql from "graphql-tag";
+import MoonLoader from "react-spinners/MoonLoader";
 
-const fetch = createApolloFetch({
-  uri: `/graphql`,
-});
-export default class RedirectPage extends Component {
-  constructor(props) {
-    super(props);
+const RedirectPage = (props) => {
+  const { data, loading, error } = useQuery(GET_LINK, {
+    variables: { Short_URL: props.match.params.short_id },
+  });
 
-    this.state = {
-      short_link: this.props.match.params.short_id,
-      link: undefined,
-    };
-  }
+  let markup;
 
-  redirect() {
-    fetch({
-      query: `{
-            link_by_short_url(Short_URL: "${
-              this.state.short_link
-            }", Expires_At: ${new Date().getTime()}){
-              Base_URL
-              Expires_At
-            }
-          }`,
-    }).then((res) => {
-      if (res.data.link_by_short_url) {
-        let x_time = res.data.link_by_short_url.Expires_At;
-        let currentDate = new Date();
-        if (x_time === null || x_time > currentDate.getTime()) {
-          // If link does not expire or has not expired yet
-          this.setState({ link: res.data.link_by_short_url.Base_URL });
-        } else {
-          console.log("Link has expired.");
-        }
-      } else {
-        console.log("Did not find a link");
-      }
-    });
-  }
+  if (loading) {
+    markup = (
+      <Center>
+        <Stack direction="column">
+          <MoonLoader />
+          <Text>Loading...</Text>
+        </Stack>
+      </Center>
+    );
+  } else if (error) {
+    markup = (
+      <Center>
+        <Stack direction="column">
+          <Alert status="error">
+            <AlertIcon />
+            <Text>{error.message}</Text>
+          </Alert>
+        </Stack>
+      </Center>
+    );
+  } else if (data) {
+    const link = data.getLinkForRedirect.Base_URL;
 
-  componentDidMount() {
-    this.redirect();
-  }
-
-  render() {
-    if (this.state.link !== undefined) {
-      if (this.state.link.indexOf("http") !== -1) {
-        window.location.replace(this.state.link);
-      } else {
-        window.location.replace("//" + this.state.link);
-      }
+    if (link.indexOf("http") !== -1) {
+      window.location.replace(link);
+    } else {
+      window.location.replace("//" + link);
     }
-    return (
-      <Box id="redirect">
-        {this.state.link !== undefined ? (
-          <Heading textAlign="center">
-            Redirecting to {this.state.link}...
-          </Heading>
-        ) : (
-          <Heading textAlign="center">
-            Trying to find your link... if it doesn't load, it probably doesn't
-            exist or has expired
-          </Heading>
-        )}
-      </Box>
+
+    markup = (
+      <Stack direction="column">
+        <Center>
+          <MoonLoader />
+        </Center>
+        <Container textAlign="center">
+          <Text>Link found!</Text>
+          <Text>Redirecting to {link} ...</Text>
+        </Container>
+      </Stack>
     );
   }
-}
+
+  return <Container id="redirect">{markup}</Container>;
+};
+
+export default RedirectPage;
+
+const GET_LINK = gql`
+  query createNewLink($Short_URL: String!) {
+    getLinkForRedirect(Short_URL: $Short_URL) {
+      Expires_At
+      Base_URL
+      Short_URL
+    }
+  }
+`;
