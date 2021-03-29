@@ -19,9 +19,10 @@ const typeDefs = gql`
   type Message {
     id: ID!
     Sent_At: String
-    Name: String!
+    Name: String
     Email: String!
     Subject: String!
+    Message: String!
   }
   type UserResponse {
     errors: [FieldError]
@@ -47,6 +48,7 @@ const typeDefs = gql`
     users: [User]!
     me: User
     my_links: [Link]!
+    getMessages: [Message]!
   }
   type Mutation {
     createLink(

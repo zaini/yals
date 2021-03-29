@@ -8,6 +8,7 @@ const isUrl = require("../src/helpers/LinkValidation");
 // Writing what each function actually returns. This should be from mongoDB
 const resolvers = {
   Query: {
+    getMessages: () => Message.find(),
     links: () => Link.find(),
     link_by_short_url: async (_, { Short_URL, Expires_At }) => {
       if (Expires_At === undefined) {
@@ -217,7 +218,6 @@ const resolvers = {
       );
     },
     createMessage: async (_, message_details) => {
-      console.log(message_details);
       if (message_details.Name.length === 0) {
         return {
           errors: [{ field: "name", message: "that name is too short" }],
