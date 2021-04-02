@@ -110,7 +110,7 @@ const LoggedHomePage = ({ user_id }) => {
           </Select>
         </InputGroup>
 
-        <Button mt={4} mb={4} type="submit">
+        <Button mt={4} mb={4} type="submit" isLoading={loading}>
           Convert!
         </Button>
       </form>
