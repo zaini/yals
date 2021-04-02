@@ -14,7 +14,7 @@ import { useForm } from "react-hook-form";
 import gql from "graphql-tag";
 import { useMutation } from "@apollo/react-hooks";
 
-export default function ContactPage() {
+const ContactPage = () => {
   const { register, handleSubmit, errors, setError, reset } = useForm();
   const [isSuccessfullySent, setIsSuccessfullySent] = useState(false);
 
@@ -89,7 +89,7 @@ export default function ContactPage() {
       </form>
     </Box>
   );
-}
+};
 
 const CREATE_MESSAGE = gql`
   mutation SendContactMessage(
@@ -111,3 +111,5 @@ const CREATE_MESSAGE = gql`
     }
   }
 `;
+
+export default ContactPage;

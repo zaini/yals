@@ -36,7 +36,7 @@ const EDIT_LINK_MUTATION = `mutation EditLink($id: String!, $new_expiry: String!
 }
 `;
 
-export default function SignUpPage() {
+const AccountPage = () => {
   const [me_res] = useQuery({ query: ME_QUERY });
   const [my_links_res] = useQuery({ query: MY_LINKS_QUERY });
   const { data, fetching, error } = me_res;
@@ -96,4 +96,6 @@ export default function SignUpPage() {
       </Box>
     );
   }
-}
+};
+
+export default AccountPage;

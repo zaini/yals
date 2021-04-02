@@ -15,7 +15,7 @@ require("dotenv").config();
 
 const client_id = process.env.REACT_APP_GOOGLE_CLIENT_ID;
 
-export default function SignUpPage() {
+const LoginPage = () => {
   const { register, handleSubmit, errors, setError } = useForm();
 
   const [login, { loading }] = useMutation(LOGIN, {
@@ -82,7 +82,7 @@ export default function SignUpPage() {
       />
     </Box>
   );
-}
+};
 
 const LOGIN = gql`
   mutation Login($email: String!, $password: String!) {
@@ -100,3 +100,5 @@ const LOGIN = gql`
     }
   }
 `;
+
+export default LoginPage;
