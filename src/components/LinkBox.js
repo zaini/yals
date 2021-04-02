@@ -6,13 +6,7 @@ import { DeleteIcon } from "@chakra-ui/icons";
 
 const domain = process.env.REACT_APP_DOMAIN;
 
-export default function LinkBox({
-  link: e,
-  handleSubmit,
-  onSubmit,
-  deleteLink,
-  register,
-}) {
+const LinkBox = ({ link: e, handleSubmit, onSubmit, deleteLink, register }) => {
   return (
     <Box m="1" p="4" border="2px" borderColor="grey" borderRadius="md">
       <Box>
@@ -54,4 +48,6 @@ export default function LinkBox({
       </Box>
     </Box>
   );
-}
+};
+
+export default LinkBox;

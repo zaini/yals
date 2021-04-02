@@ -20,12 +20,7 @@ const contentStyle = {
   borderRadius: "5px",
 };
 
-export default function EditLinkBox({
-  link: e,
-  handleSubmit,
-  onSubmit,
-  register,
-}) {
+const EditLinkBox = ({ link: e, handleSubmit, onSubmit, register }) => {
   return (
     <Popup
       trigger={<IconButton m={2} icon={<EditIcon />} />}
@@ -80,4 +75,6 @@ export default function EditLinkBox({
       </form>
     </Popup>
   );
-}
+};
+
+export default EditLinkBox;
