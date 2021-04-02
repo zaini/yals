@@ -21,7 +21,12 @@ import {
   MenuDivider,
 } from "@chakra-ui/react";
 import { useQuery, useMutation } from "urql";
-import { DragHandleIcon, MoonIcon, SunIcon } from "@chakra-ui/icons";
+import {
+  ChevronDownIcon,
+  DragHandleIcon,
+  MoonIcon,
+  SunIcon,
+} from "@chakra-ui/icons";
 require("dotenv").config({ path: "../../.env" });
 
 const domain = process.env.REACT_APP_DOMAIN;
@@ -113,7 +118,7 @@ function App() {
 
         <Box className="navbar-links-menu">
           <Menu>
-            <MenuButton as={Button} rightIcon="chevron-down" mr="15px">
+            <MenuButton as={Button} rightIcon={<ChevronDownIcon />} mr="15px">
               <DragHandleIcon />
             </MenuButton>
             <MenuList>
