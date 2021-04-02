@@ -37,8 +37,8 @@ const ContactPage = () => {
     },
   });
 
-  const onSubmit = async (data) => {
-    await createMessage({ variables: { ...data } });
+  const onSubmit = (data) => {
+    createMessage({ variables: data });
   };
 
   return (

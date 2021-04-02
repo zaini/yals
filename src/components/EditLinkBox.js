@@ -10,6 +10,9 @@ import {
 } from "@chakra-ui/react";
 import { EditIcon } from "@chakra-ui/icons";
 import Popup from "reactjs-popup";
+import { useMutation } from "@apollo/client";
+import gql from "graphql-tag";
+import { useForm } from "react-hook-form";
 
 const domain = process.env.REACT_APP_DOMAIN;
 
@@ -20,7 +23,27 @@ const contentStyle = {
   borderRadius: "5px",
 };
 
-const EditLinkBox = ({ link: e, handleSubmit, onSubmit, register }) => {
+const EditLinkBox = ({ link }) => {
+  const { register, handleSubmit, errors, setError, reset } = useForm();
+
+  const [editLink, { loading: edit_loading }] = useMutation(EDIT_LINK, {
+    onCompleted(res) {
+      if (res.editLink.errors) {
+        res.editLink.errors.forEach(({ field, message }) => {
+          setError(field, { type: "manual", message });
+        });
+      } else {
+        console.log("Successfully edited link");
+      }
+    },
+    onError(_) {
+      console.log(_);
+    },
+  });
+
+  const onEdit = (data) => {
+    editLink({ variables: { ...data, new_expiry: data.expiry_time } });
+  };
   return (
     <Popup
       trigger={<IconButton m={2} icon={<EditIcon />} />}
@@ -30,10 +53,10 @@ const EditLinkBox = ({ link: e, handleSubmit, onSubmit, register }) => {
         contentStyle,
       }}
     >
-      <form onSubmit={handleSubmit(onSubmit)}>
+      <form onSubmit={handleSubmit(onEdit)}>
         <FormControl isReadOnly={true} mt={4}>
           <InputLeftAddon children="ID" />
-          <Input ref={register} type="text" name="id" defaultValue={e.id} />
+          <Input ref={register} type="text" name="id" defaultValue={link.id} />
         </FormControl>
 
         <FormControl isReadOnly={true} mt={4}>
@@ -42,7 +65,7 @@ const EditLinkBox = ({ link: e, handleSubmit, onSubmit, register }) => {
             ref={register}
             type="text"
             name="link"
-            defaultValue={e.Base_URL}
+            defaultValue={link.Base_URL}
           />
         </FormControl>
 
@@ -52,7 +75,7 @@ const EditLinkBox = ({ link: e, handleSubmit, onSubmit, register }) => {
             ref={register}
             type="text"
             name="shortlink"
-            defaultValue={domain + "/" + e.Short_URL}
+            defaultValue={domain + "/" + link.Short_URL}
           />
         </FormControl>
 
@@ -78,3 +101,12 @@ const EditLinkBox = ({ link: e, handleSubmit, onSubmit, register }) => {
 };
 
 export default EditLinkBox;
+
+const EDIT_LINK = gql`
+  mutation EditLink($id: String!, $new_expiry: String!) {
+    editLink(ID: $id, New_Expiry: $new_expiry) {
+      id
+      Expires_At
+    }
+  }
+`;
