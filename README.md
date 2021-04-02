@@ -4,6 +4,14 @@ A link shortener that allows you to set custom URLs, expiration dates and manage
 
 http://yals.zreo.me/
 
+# TODO
+
+- refactor navbar
+- add user/login/logout to context
+- use context instead of query
+- redesign many of the pages
+- update this README
+
 # Features
 
 - shorten any link
