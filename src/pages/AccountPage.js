@@ -46,19 +46,19 @@ const AccountPage = () => {
     error: links_error,
   } = my_links_res;
 
-  const [delete_res, deleteLinkMutation] = useMutation(DELETE_LINK_MUTATION);
+  const [deleteLinkMutation] = useMutation(DELETE_LINK_MUTATION);
 
   const deleteLink = async (id) => {
-    let res = await deleteLinkMutation({ id: id });
+    await deleteLinkMutation({ id: id });
     window.location.reload(false);
   };
 
-  const { register, handleSubmit, errors, setError } = useForm();
+  const { register, handleSubmit } = useForm();
 
-  const [edit_res, editLinkMutation] = useMutation(EDIT_LINK_MUTATION);
+  const [editLinkMutation] = useMutation(EDIT_LINK_MUTATION);
 
   const onSubmit = async (data) => {
-    let res = await editLinkMutation({
+    await editLinkMutation({
       id: data.id,
       new_expiry: data.expiry_time,
     });
@@ -84,6 +84,7 @@ const AccountPage = () => {
           {links_data.my_links.map((e, i) => {
             return (
               <LinkBox
+                key={i}
                 link={e}
                 handleSubmit={handleSubmit}
                 onSubmit={onSubmit}

@@ -38,7 +38,6 @@ const ContactPage = () => {
   });
 
   const onSubmit = async (data) => {
-    console.log(data);
     await createMessage({ variables: { ...data } });
   };
 

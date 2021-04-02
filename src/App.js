@@ -43,9 +43,9 @@ const LOGOUT_MUTATION = `mutation {
 }`;
 
 function App() {
-  const [me_res, reexecuteQuery] = useQuery({ query: ME_QUERY });
+  const [me_res] = useQuery({ query: ME_QUERY });
   const [res, logout] = useMutation(LOGOUT_MUTATION);
-  const { data, fetching, error } = me_res;
+  const { data, fetching } = me_res;
   let user_id;
   const { colorMode, toggleColorMode } = useColorMode();
 
@@ -56,10 +56,11 @@ function App() {
   } else if (data && data.me !== null) {
     user_id = data.me.id;
     body = [
-      <Link className="link" href={"/account"}>
+      <Link className="link" href={"/account"} key={1}>
         {data.me.UserName}
       </Link>,
       <Button
+        key={2}
         onClick={() => {
           logout();
           window.location.replace("/");
@@ -70,34 +71,33 @@ function App() {
       </Button>,
     ];
     menu_body = [
-      <MenuItem as="a" href={"/account"}>
+      <MenuItem as="a" href={"/account"} key={1}>
         {data.me.UserName}
       </MenuItem>,
       <MenuItem
-        as="Button"
+        key={2}
         onClick={() => {
           logout();
           window.location.replace("/");
         }}
-        isLoading={res.fetching}
       >
         Logout
       </MenuItem>,
     ];
   } else {
     body = [
-      <Link className="link" href={"/login"}>
+      <Link className="link" href={"/login"} key={1}>
         Login
       </Link>,
-      <Link className="link" href={"/signup"}>
+      <Link className="link" href={"/signup"} key={2}>
         Sign Up
       </Link>,
     ];
     menu_body = [
-      <MenuItem as="a" href={"/login"}>
+      <MenuItem as="a" href={"/login"} key={3}>
         Login
       </MenuItem>,
-      <MenuItem as="a" href={"/signup"}>
+      <MenuItem as="a" href={"/signup"} key={4}>
         Sign Up
       </MenuItem>,
     ];
@@ -129,8 +129,8 @@ function App() {
                 Contact
               </MenuItem>
               <MenuDivider />
-              {menu_body ? menu_body[0] : null}
-              {menu_body ? menu_body[1] : null}
+              {menu_body && menu_body[0]}
+              {menu_body && menu_body[1]}
               <MenuDivider />
               <MenuItem>
                 <Button onClick={toggleColorMode} marginRight="50px">
