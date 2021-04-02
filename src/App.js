@@ -20,44 +20,62 @@ import {
   MenuButton,
   MenuDivider,
 } from "@chakra-ui/react";
-import { useQuery, useMutation } from "urql";
 import {
   ChevronDownIcon,
   DragHandleIcon,
   MoonIcon,
   SunIcon,
 } from "@chakra-ui/icons";
+import { useQuery, useMutation } from "@apollo/client";
+import gql from "graphql-tag";
 require("dotenv").config({ path: "../../.env" });
 
 const domain = process.env.REACT_APP_DOMAIN;
 
-const ME_QUERY = `query {
-  me {
-    id
-    UserName
+const GET_USER = gql`
+  query {
+    me {
+      id
+      UserName
+      Created_At
+    }
   }
-}`;
+`;
 
-const LOGOUT_MUTATION = `mutation {
-  logout
-}`;
+const LOGOUT = gql`
+  mutation {
+    logout
+  }
+`;
 
 function App() {
-  const [me_res] = useQuery({ query: ME_QUERY });
-  const [res, logout] = useMutation(LOGOUT_MUTATION);
-  const { data, fetching } = me_res;
+  const {
+    data: user_data,
+    loading: user_loading,
+    error: user_error,
+  } = useQuery(GET_USER);
+
+  const [logout, { loading: logout_loading }] = useMutation(LOGOUT, {
+    onCompleted(res) {
+      console.log("Successfully logged out");
+    },
+    onError(_) {
+      console.log(_);
+    },
+  });
+
   let user_id;
   const { colorMode, toggleColorMode } = useColorMode();
 
   let body = null;
   let menu_body = null;
 
-  if (fetching) {
-  } else if (data && data.me !== null) {
-    user_id = data.me.id;
+  if (user_loading) {
+  } else if (user_data && user_data.me !== null) {
+    user_id = user_data.me.id;
     body = [
       <Link className="link" href={"/account"} key={1}>
-        {data.me.UserName}
+        {user_data.me.UserName}
       </Link>,
       <Button
         key={2}
@@ -65,14 +83,14 @@ function App() {
           logout();
           window.location.replace("/");
         }}
-        isLoading={res.fetching}
+        isLoading={logout_loading}
       >
         Logout
       </Button>,
     ];
     menu_body = [
       <MenuItem as="a" href={"/account"} key={1}>
-        {data.me.UserName}
+        {user_data.me.UserName}
       </MenuItem>,
       <MenuItem
         key={2}
