@@ -14,11 +14,9 @@ import {
   ModalFooter,
   ModalBody,
   ModalCloseButton,
-  Box,
   useDisclosure,
 } from "@chakra-ui/react";
 import { EditIcon } from "@chakra-ui/icons";
-import Popup from "reactjs-popup";
 import { useMutation } from "@apollo/client";
 import gql from "graphql-tag";
 import { useForm } from "react-hook-form";
@@ -49,6 +47,7 @@ const EditLinkModal = ({ link }) => {
   const onEdit = (data) => {
     editLink({ variables: { ...data, new_expiry: data.expiry_time } });
   };
+
   return (
     <>
       <IconButton m={2} icon={<EditIcon />} onClick={onOpen} />
