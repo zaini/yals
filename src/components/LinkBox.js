@@ -1,7 +1,7 @@
 import React from "react";
 import { Box, Divider, IconButton, Input } from "@chakra-ui/react";
 import QRAndCopy from "./QRAndCopy";
-import EditLinkBox from "./EditLinkBox";
+import EditLinkModal from "./EditLinkModal";
 import { DeleteIcon } from "@chakra-ui/icons";
 import { useMutation } from "@apollo/client";
 import gql from "graphql-tag";
@@ -36,17 +36,22 @@ const LinkBox = ({ link }) => {
       </Box>
       <Box>
         <b>Expires:</b>{" "}
-        {link.Expires_At === null
-          ? "Never"
-          : new Date(parseInt(link.Expires_At)).toUTCString()}
+        <Input
+          value={
+            link.Expires_At === null
+              ? "Never"
+              : new Date(parseInt(link.Expires_At)).toUTCString()
+          }
+          isReadOnly={true}
+        />
       </Box>
-      <Divider />
+      <Divider mt="20px" mb="20px" />
       <Box>
         <QRAndCopy link={domain + "/" + link.Short_URL}></QRAndCopy>
       </Box>
 
       <Box textAlign="center">
-        <EditLinkBox link={link} />
+        <EditLinkModal link={link} />
         <IconButton
           m={2}
           icon={<DeleteIcon />}
