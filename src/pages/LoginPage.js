@@ -8,40 +8,37 @@ import {
   Heading,
 } from "@chakra-ui/react";
 import { useForm } from "react-hook-form";
-import { useMutation } from "urql";
+import { useMutation } from "@apollo/react-hooks";
 import GoogleLogin from "react-google-login";
+import gql from "graphql-tag";
 require("dotenv").config();
 
 const client_id = process.env.REACT_APP_GOOGLE_CLIENT_ID;
 
-const LOGIN_MUTATION = `mutation Login($email: String!, $password: String!){
-  login(Email: $email, Password: $password) {
-    errors {
-      field
-      message
-    }
-    user {
-      UserName
-      Created_At
-      Email
-      id
-    }
-  }
-}`;
-
 export default function SignUpPage() {
-  const [res, loginUser] = useMutation(LOGIN_MUTATION);
-
   const { register, handleSubmit, errors, setError } = useForm();
-  const onSubmit = async (data) => {
-    const response = await loginUser(data);
-    if (response.data?.login.errors !== null) {
-      response.data.login.errors.forEach(({ field, message }) => {
-        setError(field, { type: "manual", message });
+
+  const [login, { loading }] = useMutation(LOGIN, {
+    onCompleted(res) {
+      if (res.login.errors) {
+        res.login.errors.forEach(({ field, message }) => {
+          setError(field, { type: "manual", message });
+        });
+      } else {
+        window.location.replace("/account");
+      }
+    },
+    onError(_) {
+      console.log(_);
+      setError("email", {
+        type: "manual",
+        message: _.message,
       });
-    } else {
-      window.location.replace("/account");
-    }
+    },
+  });
+
+  const onSubmit = (data) => {
+    login({ variables: data });
   };
 
   return (
@@ -67,7 +64,7 @@ export default function SignUpPage() {
           </FormErrorMessage>
         </FormControl>
 
-        <Button mt={4} mb={4} type="submit">
+        <Button mt={4} mb={4} type="submit" isLoading={loading}>
           Submit
         </Button>
       </form>
@@ -82,7 +79,24 @@ export default function SignUpPage() {
         }}
         onFailure={(res) => console.log(res)}
         cookiePolicy={"single_host_origin"}
-      />{" "}
+      />
     </Box>
   );
 }
+
+const LOGIN = gql`
+  mutation Login($email: String!, $password: String!) {
+    login(Email: $email, Password: $password) {
+      errors {
+        field
+        message
+      }
+      user {
+        UserName
+        Created_At
+        Email
+        id
+      }
+    }
+  }
+`;
