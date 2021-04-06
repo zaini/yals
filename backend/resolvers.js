@@ -1,13 +1,14 @@
-const { gql } = require("apollo-server-express");
 const Link = require("./models/Link");
 const { nanoid } = require("nanoid");
 const argon2 = require("argon2");
 const User = require("./models/User");
 const Message = require("./models/Message");
+const isUrl = require("../src/helpers/LinkValidation");
 
 // Writing what each function actually returns. This should be from mongoDB
 const resolvers = {
   Query: {
+    getMessages: () => Message.find(),
     links: () => Link.find(),
     link_by_short_url: async (_, { Short_URL, Expires_At }) => {
       if (Expires_At === undefined) {
@@ -20,6 +21,20 @@ const resolvers = {
           { Expires_At: { $eq: null } },
         ],
       });
+    },
+    getLinkForRedirect: async (_, { Short_URL }) => {
+      const link = await Link.findOne({
+        Short_URL: Short_URL,
+        $or: [
+          { Expires_At: { $gt: new Date().getTime() } },
+          { Expires_At: { $eq: null } },
+        ],
+      });
+
+      if (!link) {
+        throw new Error("Link either doesn't exist or has expired 😢");
+      }
+      return link;
     },
     link_by_base_url: (_, { Base_URL }) =>
       Link.find({ Base_URL: Base_URL, Created_By: null }),
@@ -43,7 +58,14 @@ const resolvers = {
   },
   Mutation: {
     // First argument is parent, which we don't need. Second parameter is the arguments, so we destructure for what we want.
-    createLink: (_, { Created_By, Expires_At, Base_URL, Short_ID }) => {
+    createLink: async (_, { Created_By, Expires_At, Base_URL, Short_ID }) => {
+      console.log(Created_By, Expires_At, Base_URL, Short_ID);
+      if (!isUrl(Base_URL)) {
+        return {
+          errors: [{ field: "link", message: "That is not a valid link" }],
+        };
+      }
+
       if (Expires_At) {
         Expires_At = parseInt(Expires_At);
       }
@@ -53,16 +75,37 @@ const resolvers = {
         expiry_date = current_date.getTime() + Expires_At;
       }
 
-      let short_id = Short_ID === undefined ? nanoid(7) : Short_ID;
-      const link = new Link({
-        Created_By: Created_By === undefined ? null : Created_By,
-        Created_At: new Date(),
-        Expires_At: expiry_date,
-        Base_URL: Base_URL,
-        Short_URL: short_id,
-      });
-      link.save();
-      return link;
+      let link;
+      // if short_id, check it's not used and then create it
+      if (Short_ID) {
+        let res = await Link.findOne({ Short_URL: Short_ID }).exec();
+        if (res) {
+          return {
+            errors: [
+              { field: "short_id", message: "That short ID is already in use" },
+            ],
+          };
+        } else {
+          link = new Link({
+            Created_By: Created_By === undefined ? null : Created_By,
+            Created_At: new Date(),
+            Expires_At: expiry_date,
+            Base_URL: Base_URL,
+            Short_URL: Short_ID,
+          });
+          link.save();
+        }
+      } else {
+        link = new Link({
+          Created_At: new Date(),
+          Expires_At: expiry_date,
+          Base_URL: Base_URL,
+          Short_URL: nanoid(7),
+        });
+        link.save();
+      }
+
+      return { link };
     },
     editLink: (_, { ID, New_Expiry }) => {
       New_Expiry = parseInt(New_Expiry);
@@ -175,7 +218,6 @@ const resolvers = {
       );
     },
     createMessage: async (_, message_details) => {
-      console.log(message_details);
       if (message_details.Name.length === 0) {
         return {
           errors: [{ field: "name", message: "that name is too short" }],

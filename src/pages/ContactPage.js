@@ -2,43 +2,43 @@ import React, { useState } from "react";
 import {
   Box,
   Button,
+  Center,
   FormControl,
   FormErrorMessage,
   Heading,
   Input,
   Textarea,
-} from "@chakra-ui/core";
+  Text,
+} from "@chakra-ui/react";
 import { useForm } from "react-hook-form";
-import { useMutation } from "urql";
+import gql from "graphql-tag";
+import { useMutation } from "@apollo/react-hooks";
 
-const MESSAGE_MUTATION = `mutation SendContactMessage($name: String!, $email: String!, $subject: String!, $message: String!){
-  createMessage(
-    Name: $name
-    Email: $email
-    Subject: $subject
-    Message: $message
-  ) {
-    errors {
-      field
-      message
-    }
-  }
-}`;
-
-export default function ContactPage() {
-  const [res, sendMessage] = useMutation(MESSAGE_MUTATION);
-  const [isSuccessfullySent, setIsSuccessfullySent] = useState(false);
+const ContactPage = () => {
   const { register, handleSubmit, errors, setError, reset } = useForm();
-  const onSubmit = async (data) => {
-    const response = await sendMessage(data);
-    if (response.data?.createMessage.errors !== null) {
-      response.data.createMessage.errors.forEach(({ field, message }) => {
-        setError(field, { type: "manual", message });
+  const [isSuccessfullySent, setIsSuccessfullySent] = useState(false);
+
+  const [createMessage, { loading }] = useMutation(CREATE_MESSAGE, {
+    onCompleted(res) {
+      if (res.createMessage.errors) {
+        res.createMessage.errors.forEach(({ field, message }) => {
+          setError(field, { type: "manual", message });
+        });
+      } else {
+        reset();
+        setIsSuccessfullySent(true);
+      }
+    },
+    onError(_) {
+      setError("link", {
+        type: "manual",
+        message: _.message,
       });
-    } else {
-      reset();
-      setIsSuccessfullySent(true);
-    }
+    },
+  });
+
+  const onSubmit = (data) => {
+    createMessage({ variables: data });
   };
 
   return (
@@ -78,12 +78,37 @@ export default function ContactPage() {
           </FormErrorMessage>
         </FormControl>
 
-        <Button mt={4} mb={4} type="submit">
+        <Button mt={4} mb={4} type="submit" isLoading={loading}>
           Send
         </Button>
         <br />
-        {isSuccessfullySent ? "Message successfully send!" : null}
+        <Center>
+          {isSuccessfullySent && <Text>Message successfully sent!</Text>}
+        </Center>
       </form>
     </Box>
   );
-}
+};
+
+const CREATE_MESSAGE = gql`
+  mutation SendContactMessage(
+    $name: String!
+    $email: String!
+    $subject: String!
+    $message: String!
+  ) {
+    createMessage(
+      Name: $name
+      Email: $email
+      Subject: $subject
+      Message: $message
+    ) {
+      errors {
+        field
+        message
+      }
+    }
+  }
+`;
+
+export default ContactPage;

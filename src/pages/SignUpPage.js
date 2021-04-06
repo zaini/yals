@@ -7,41 +7,39 @@ import {
   FormErrorMessage,
   FormHelperText,
   Heading,
-} from "@chakra-ui/core";
+} from "@chakra-ui/react";
 import { useForm } from "react-hook-form";
-import { useMutation } from "urql";
+import { useMutation } from "@apollo/react-hooks";
 import GoogleLogin from "react-google-login";
+import gql from "graphql-tag";
 require("dotenv").config({ path: "../../.env" });
 
 const client_id = process.env.REACT_APP_GOOGLE_CLIENT_ID;
 
-const REGISTER_MUTATION = `mutation Register($email: String!, $username: String!, $password: String!){
-  registerUser(Email: $email, UserName: $username, Password: $password){
-    errors {
-      field
-      message
-    }
-    user {
-      id
-      Email
-      UserName
-    }
-  }
-}`;
-
-export default function SignUpPage() {
-  const [res, registerUser] = useMutation(REGISTER_MUTATION);
-
+const SignUpPage = () => {
   const { register, handleSubmit, errors, setError } = useForm();
-  const onSubmit = async (data) => {
-    const response = await registerUser(data);
-    if (response.data?.registerUser.errors !== null) {
-      response.data.registerUser.errors.forEach(({ field, message }) => {
-        setError(field, { type: "manual", message });
+
+  const [registerUser, { loading }] = useMutation(REGISTER, {
+    onCompleted(res) {
+      if (res.registerUser.errors) {
+        res.registerUser.errors.forEach(({ field, message }) => {
+          setError(field, { type: "manual", message });
+        });
+      } else {
+        window.location.replace("/account");
+      }
+    },
+    onError(_) {
+      console.log(_);
+      setError("email", {
+        type: "manual",
+        message: _.message,
       });
-    } else {
-      window.location.replace("/account");
-    }
+    },
+  });
+
+  const onSubmit = (data) => {
+    registerUser({ variables: data });
   };
 
   return (
@@ -83,7 +81,7 @@ export default function SignUpPage() {
           <FormHelperText>Make it a strong password.</FormHelperText>
         </FormControl>
 
-        <Button mt={4} mb={4} type="submit">
+        <Button mt={4} mb={4} type="submit" isLoading={loading}>
           Submit
         </Button>
       </form>
@@ -99,7 +97,25 @@ export default function SignUpPage() {
         }}
         onFailure={(res) => console.log(res)}
         cookiePolicy={"single_host_origin"}
-      />{" "}
+      />
     </Box>
   );
-}
+};
+
+const REGISTER = gql`
+  mutation Register($email: String!, $username: String!, $password: String!) {
+    registerUser(Email: $email, UserName: $username, Password: $password) {
+      errors {
+        field
+        message
+      }
+      user {
+        id
+        Email
+        UserName
+      }
+    }
+  }
+`;
+
+export default SignUpPage;

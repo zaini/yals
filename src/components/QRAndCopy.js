@@ -1,12 +1,6 @@
 import React, { useState } from "react";
-import {
-  Flex,
-  Box,
-  Icon,
-  Input,
-  InputGroup,
-  InputLeftAddon,
-} from "@chakra-ui/core";
+import { Flex, Input, InputGroup, InputLeftAddon } from "@chakra-ui/react";
+import { CheckIcon, CopyIcon } from "@chakra-ui/icons";
 import { CopyToClipboard } from "react-copy-to-clipboard";
 import QRCode from "qrcode.react";
 
@@ -23,7 +17,7 @@ const QRAndCopy = ({ link }) => {
               text={link}
               onCopy={() => setCopied(true)}
             >
-              {copied ? <Icon name="check" /> : <Icon name="copy" />}
+              {copied ? <CheckIcon /> : <CopyIcon />}
             </CopyToClipboard>
           }
         />

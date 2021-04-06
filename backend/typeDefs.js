@@ -19,9 +19,10 @@ const typeDefs = gql`
   type Message {
     id: ID!
     Sent_At: String
-    Name: String!
+    Name: String
     Email: String!
     Subject: String!
+    Message: String!
   }
   type UserResponse {
     errors: [FieldError]
@@ -31,6 +32,10 @@ const typeDefs = gql`
     errors: [FieldError]
     message: Message
   }
+  type LinkResponse {
+    errors: [FieldError]
+    link: Link
+  }
   type FieldError {
     field: String
     message: String
@@ -38,10 +43,12 @@ const typeDefs = gql`
   type Query {
     links: [Link]!
     link_by_short_url(Short_URL: String!, Expires_At: Float): Link # having to use float because BigInt isn't a thing
+    getLinkForRedirect(Short_URL: String!): Link
     link_by_base_url(Base_URL: String!): [Link]
     users: [User]!
     me: User
     my_links: [Link]!
+    getMessages: [Message]!
   }
   type Mutation {
     createLink(
@@ -49,7 +56,7 @@ const typeDefs = gql`
       Expires_At: String
       Base_URL: String!
       Short_ID: String
-    ): Link!
+    ): LinkResponse!
     editLink(ID: String!, New_Expiry: String!): Link!
     deleteLink(ID: String): Link
     registerUser(

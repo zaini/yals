@@ -60,7 +60,13 @@ const server = new ApolloServer({
   },
 });
 
-server.applyMiddleware({ app, cors: false });
+// Allow requests only from the frontend
+const corsOptions = {
+  origin: process.env.FRONTEND_URL || "*",
+  optionsSuccessStatus: 200,
+};
+
+server.applyMiddleware({ app, cors: corsOptions });
 
 app.use(express.static(path.join(__dirname, "../build")));
 app.get("*", (req, res) => {
